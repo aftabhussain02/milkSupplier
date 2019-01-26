@@ -3,3 +3,4 @@ export const PRIMARY_COLOR = '#fff';
 export const ACCENT_COLOR = '#067B41';
 export const BORDER_COLOR = '#CECECE';
 export const TEXT_COLOR_2 = '#727272';
+export const UNDERLAY_ACCENT = '#026634';

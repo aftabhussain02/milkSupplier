@@ -3,11 +3,11 @@ import { View, SectionList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { SectionTitle, SectionListItem } from '../../component';
-import { initializeEditVendor, fetchVendorsList, selectedVendor } from '../../actions';
+import { initializeEditVendor, fetchvendorsList, selectedVendor } from '../../actions';
 
 class ListVendors extends Component {
   componentDidMount() {
-    this.props.fetchVendorsList();
+    this.props.fetchvendorsList();
   }
 
   resolveData() {
@@ -34,7 +34,7 @@ class ListVendors extends Component {
             onPress={() => {
               this.props.selectedVendor(item);
               this.props.initializeEditVendor(item);
-              this.props.navigation.navigate('AddProductEntry');
+              this.props.navigation.navigate('addVendorProductEntry');
             }}
           />
         )}
@@ -51,11 +51,11 @@ class ListVendors extends Component {
 }
 
 const mapStateToProps = state => {
-  const { data } = state.listCustomer;
+  const { data } = state.listVendor;
   return { data };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchVendorsList, selectedVendor, initializeEditVendor }
+  { fetchvendorsList, selectedVendor, initializeEditVendor }
 )(ListVendors);

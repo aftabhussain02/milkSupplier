@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { getStorageParams } from '../../constant/storage';
-import { fetchProductsList } from '../../actions/productAction';
+import { fetchProductsList, fetchCustomersList, fetchvendorsList } from '../../actions';
 
 class AuthCheck extends Component {
   async componentDidMount() {
@@ -12,6 +12,8 @@ class AuthCheck extends Component {
           if (u.token) {
             try {
               this.props.fetchProductsList();
+              this.props.fetchCustomersList();
+              this.props.fetchvendorsList();
             } finally {
               this.props.navigation.navigate('App');
             }
@@ -37,5 +39,5 @@ class AuthCheck extends Component {
 
 export default connect(
   null,
-  { fetchProductsList }
+  { fetchProductsList, fetchCustomersList, fetchvendorsList }
 )(AuthCheck);

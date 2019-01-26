@@ -1,48 +1,48 @@
 import Axios from 'axios';
-import { productApi, getStorageParams } from '../constant';
+import { productTypeApi, getStorageParams } from '../constant';
 import {
-  FETCH_PRODUCTS,
-  UPDATE_PRODUCT_PROPS,
-  PRODUCT_SUCCESS,
-  PRODUCT_ERROR,
-  PRODUCT_ATTEMPT,
+  FETCH_PRODUCT_TYPES,
+  UPDATE_PRODUCT_TYPE_PROPS,
+  PRODUCT_TYPE_SUCCESS,
+  PRODUCT_TYPE_ERROR,
+  PRODUCT_TYPE_ATTEMPT,
 } from './type';
 
-export const fetchProductsList = () => dispatch =>
+export const fetchProductTypesList = () => dispatch =>
   getStorageParams().then(({ headers }) =>
-    Axios.get(productApi, { headers })
+    Axios.get(productTypeApi, { headers })
       .then(({ data }) => {
-        console.log(data.data);
         dispatch({
-          type: FETCH_PRODUCTS,
+          type: FETCH_PRODUCT_TYPES,
           payload: data.data,
         });
       })
-      .catch(e => console.log(e))
+      .catch(e => console.log(e.response))
   );
 
-export const updateProductProps = (prop, value) => ({
-  type: UPDATE_PRODUCT_PROPS,
+export const updateProductTypeProps = (prop, value) => ({
+  type: UPDATE_PRODUCT_TYPE_PROPS,
   payload: { prop, value },
 });
 
-export const addProduct = ({ name }) => dispatch =>
+export const addProductType = ({ name, product_id }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
-      type: PRODUCT_ATTEMPT,
+      type: PRODUCT_TYPE_ATTEMPT,
     });
 
     return Axios.post(
-      productApi,
+      productTypeApi,
       {
         name,
+        product_id,
       },
       { headers }
     )
       .then(({ data }) => {
         console.log(data);
         dispatch({
-          type: PRODUCT_SUCCESS,
+          type: PRODUCT_TYPE_SUCCESS,
           payload: data,
         });
       })
@@ -50,12 +50,12 @@ export const addProduct = ({ name }) => dispatch =>
         console.log(error.response.data);
         if (!error.response.data.success) {
           return dispatch({
-            type: PRODUCT_ERROR,
+            type: PRODUCT_TYPE_ERROR,
             payload: error.response.data,
           });
         }
         return dispatch({
-          type: PRODUCT_ERROR,
+          type: PRODUCT_TYPE_ERROR,
           payload: { message: 'Something went wrong' },
         });
       });

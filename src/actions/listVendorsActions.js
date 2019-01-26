@@ -7,6 +7,7 @@ export const fetchvendorsList = () => dispatch =>
   getStorageParams().then(({ headers }) =>
     Axios.get(vendorApi, { headers })
       .then(({ data }) => {
+        console.log(data);
         dispatch({
           type: LIST_VENDORS,
           payload: data.data,

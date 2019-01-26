@@ -12,11 +12,19 @@ import Login from '../screens/auth/Login';
 import { ACCENT_COLOR } from '../constant';
 import ListClients from '../screens/clients/ListClients';
 import Setting from '../screens/setting/Setting';
-import ListVendor from '../screens/vendors/ListVendors';
 import { MenuHeader, BackHeader } from '../component';
 import AddProductEntry from '../screens/clients/AddProductEntry';
 import ViewClientProfile from '../screens/clients/ViewClientProfile';
 import EditClientProfile from '../screens/clients/EditClientProfile';
+import ListVendors from '../screens/vendors/ListVendors';
+import AddVendorProductEntry from '../screens/vendors/AddVendorProductEntry';
+import ViewVendorProfile from '../screens/vendors/ViewVendorProfile';
+import EditVendorProfile from '../screens/vendors/EditVendorProfile';
+import AddScreen from '../screens/add/AddScreen';
+import AddProduct from '../screens/add/AddProduct';
+import AddProductType from '../screens/add/AddProductType';
+import AddClient from '../screens/add/AddClient';
+import AddVendor from '../screens/add/AddVendor';
 
 const Auth = createStackNavigator({
   login: {
@@ -43,7 +51,7 @@ const ClientsStack = createStackNavigator({
       header: <MenuHeader title="Clients" disabledRightIcon />,
     }),
   },
-  AddProductEntry: {
+  addProductEntry: {
     screen: AddProductEntry,
     navigationOptions: ({ navigation }) => ({
       header: (
@@ -77,14 +85,75 @@ const ClientsStack = createStackNavigator({
 });
 
 const AddStack = createStackNavigator({
-  home: {
-    screen: Home,
+  addScreen: {
+    screen: AddScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <MenuHeader title="Add" disabledRightIcon />,
+    }),
+  },
+  addProduct: {
+    screen: AddProduct,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Product" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  addProductType: {
+    screen: AddProductType,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Product Type" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  addClient: {
+    screen: AddClient,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Client" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  addVendor: {
+    screen: AddVendor,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Vendor" navigation={navigation} disableRightIcon />,
+    }),
   },
 });
 
 const VendorStack = createStackNavigator({
   listVendor: {
-    screen: ListVendor,
+    screen: ListVendors,
+    navigationOptions: ({ navigation }) => ({
+      header: <MenuHeader title="Vendors" disabledRightIcon />,
+    }),
+  },
+  addVendorProductEntry: {
+    screen: AddVendorProductEntry,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Add Product Entry"
+          rightIconName="more-vert"
+          navigation={navigation}
+          onRightIconPress={() => navigation.state.params.manageMore()}
+        />
+      ),
+    }),
+  },
+  vendorProfile: {
+    screen: ViewVendorProfile,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Vendor Profile"
+          navigation={navigation}
+          onRightIconPress={() => navigation.navigate('editVendorProfile')}
+        />
+      ),
+    }),
+  },
+  editVendorProfile: {
+    screen: EditVendorProfile,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Edit Profile" navigation={navigation} disableRightIcon />,
+    }),
   },
 });
 
@@ -128,12 +197,18 @@ const App = createAppContainer(
           } else if (routeName === 'Add') {
             return (
               <Icon
-                name="add"
-                borderWidth={1}
-                size={25}
-                color={tintColor}
-                borderColor={ACCENT_COLOR}
-                borderRadius={25}
+                name="plus"
+                type="font-awesome"
+                size={24}
+                color="#F8F8F8"
+                containerStyle={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 80,
+                  height: 80,
+                  borderRadius: 80 / 2,
+                  backgroundColor: ACCENT_COLOR,
+                }}
               />
             );
           } else if (routeName === 'Vendor') {

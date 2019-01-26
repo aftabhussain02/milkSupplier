@@ -3,16 +3,11 @@ import { View, SectionList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { SectionTitle, SectionListItem } from '../../component';
-import { initializeEditClient, fetchCustomersList, selectedClient } from '../../actions';
+import { initializeEditClient, selectedClient } from '../../actions';
 
 class ListClients extends Component {
-  componentDidMount() {
-    this.props.fetchCustomersList();
-  }
-
   resolveData() {
     const { data } = this.props;
-    console.log(data);
     const obj = [];
     if (data && Object.keys(data).length > 0) {
       _.map(data, (v, i) => {
@@ -35,7 +30,7 @@ class ListClients extends Component {
             onPress={() => {
               this.props.selectedClient(item);
               this.props.initializeEditClient(item);
-              this.props.navigation.navigate('AddProductEntry');
+              this.props.navigation.navigate('addProductEntry');
             }}
           />
         )}
@@ -58,5 +53,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchCustomersList, selectedClient, initializeEditClient }
+  { selectedClient, initializeEditClient }
 )(ListClients);

@@ -28,7 +28,7 @@ export const attemptLogin = (email, password) => async dispatch => {
       });
     })
     .catch(e => {
-      console.log(e);
+      console.log(e.response.data);
       if (!e.success) {
         return dispatch({
           type: LOGIN_ERROR,

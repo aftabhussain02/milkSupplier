@@ -8,11 +8,11 @@ import {
   InputButton,
   SuccessModal,
   InputError,
-  ClientHeader,
+  VendorHeader,
 } from '../../component';
-import { updateProductEntryProps, addProductEntry } from '../../actions';
+import { updateVendorProductEntryProps, addVendorProductEntry } from '../../actions';
 
-class AddProductEntry extends Component {
+class AddVendorProductEntry extends Component {
   state = {
     success: false,
     openMore: false,
@@ -38,7 +38,7 @@ class AddProductEntry extends Component {
 
   resolveMore() {
     if (this.state.openMore) {
-      return <ClientHeader navigation={this.props.navigation} />;
+      return <VendorHeader navigation={this.props.navigation} />;
     }
   }
 
@@ -87,7 +87,7 @@ class AddProductEntry extends Component {
             value={qty}
             error={'qty' in error}
             errorText={'qty' in error && error.qty[0]}
-            onChangeText={value => this.props.updateProductEntryProps('qty', value)}
+            onChangeText={value => this.props.updateVendorProductEntryProps('qty', value)}
           />
           <InputSelect
             label="Product"
@@ -95,7 +95,7 @@ class AddProductEntry extends Component {
             data={this.resolveData(this.props.products)}
             error={'product_id' in error}
             errorText={'product_id' in error && error.product_id[0]}
-            onValueChange={value => this.props.updateProductEntryProps('product_id', value)}
+            onValueChange={value => this.props.updateVendorProductEntryProps('product_id', value)}
           />
           <InputSelect
             label="Product Type"
@@ -103,21 +103,23 @@ class AddProductEntry extends Component {
             data={this.resolveProductType()}
             error={'product_type_id' in error}
             errorText={'product_type_id' in error && error.product_type_id[0]}
-            onValueChange={value => this.props.updateProductEntryProps('product_type_id', value)}
+            onValueChange={value =>
+              this.props.updateVendorProductEntryProps('product_type_id', value)
+            }
           />
           <InputText
             error={'amount' in error}
             errorText={'amount' in error && error.amount[0]}
             label="Amount"
             value={amount}
-            onChangeText={value => this.props.updateProductEntryProps('amount', value)}
+            onChangeText={value => this.props.updateVendorProductEntryProps('amount', value)}
           />
           <InputText
             error={'remark' in error}
             errorText={'remark' in error && error.remark[0]}
             label="Remark"
             value={remark}
-            onChangeText={value => this.props.updateProductEntryProps('remark', value)}
+            onChangeText={value => this.props.updateVendorProductEntryProps('remark', value)}
           />
           <InputError
             visible={Object.keys(error) < 1 && errorMessage}
@@ -128,7 +130,7 @@ class AddProductEntry extends Component {
           <InputButton
             title="Add Product"
             onPress={() =>
-              this.props.addProductEntry({
+              this.props.addVendorProductEntry({
                 product_id,
                 product_type_id,
                 amount,
@@ -143,7 +145,7 @@ class AddProductEntry extends Component {
         <SuccessModal
           visible={success}
           onPress={() => {
-            this.props.updateProductEntryProps('success', false);
+            this.props.updateVendorProductEntryProps('success', false);
           }}
           text={message}
         />
@@ -174,8 +176,8 @@ const mapStateToProps = state => {
     amount,
     remark,
     loading,
-  } = state.productEntry;
-  const { id } = state.listCustomer.selectedClient;
+  } = state.vendorProductEntry;
+  const { id } = state.listVendor.selectedVendor;
   const { data: products } = state.fetchProduct;
 
   return {
@@ -196,5 +198,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addProductEntry, updateProductEntryProps }
-)(AddProductEntry);
+  { addVendorProductEntry, updateVendorProductEntryProps }
+)(AddVendorProductEntry);
