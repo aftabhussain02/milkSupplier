@@ -12,7 +12,14 @@ export const updateAddVendorProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const addVendor = ({ name, email, phone, product_id, product_type_id }) => dispatch =>
+export const addVendor = ({
+  name,
+  email,
+  phone,
+  product_id,
+  product_type_id,
+  alter_phone,
+}) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: ADD_VENDOR_ATTEMPT,
@@ -20,11 +27,10 @@ export const addVendor = ({ name, email, phone, product_id, product_type_id }) =
 
     return Axios.post(
       `${vendorApi}`,
-      { name, email, phone, product_id, product_type_id },
+      { name, email, phone, product_id, product_type_id, alter_phone },
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: ADD_VENDOR_SUCCESS,
           payload: data,

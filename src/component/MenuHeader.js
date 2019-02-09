@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Constants } from 'expo';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, StatusBar } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { HEADER_BACKGROUD } from '../constant';
 
@@ -16,6 +16,7 @@ export const MenuHeader = ({
   const { containerStyle, iconContainer, titleStyle, textContainer, iconStyle } = styles;
   return (
     <View style={containerStyle}>
+      <StatusBar backgroundColor="#333" barStyle="light-content" />
       <View style={iconContainer}>
         {leftIconName ? (
           <Icon

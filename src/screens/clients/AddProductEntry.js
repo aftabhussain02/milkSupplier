@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
@@ -10,7 +10,14 @@ import {
   InputError,
   ClientHeader,
 } from '../../component';
-import { updateProductEntryProps, addProductEntry } from '../../actions';
+import {
+  updateProductEntryProps,
+  addProductEntry,
+  fetchProductsList,
+  fetchFilterClientsList,
+  validate,
+  PRODUCT_ENTRY_ERROR,
+} from '../../actions';
 
 class AddProductEntry extends Component {
   state = {
@@ -29,6 +36,11 @@ class AddProductEntry extends Component {
       this.resolveProductType();
     }
   }
+  componentWillUnmount() {
+    this.setState({
+      openMore: false,
+    });
+  }
 
   changeOpenMore = () => {
     this.setState(prev => ({
@@ -38,17 +50,17 @@ class AddProductEntry extends Component {
 
   resolveMore() {
     if (this.state.openMore) {
-      return <ClientHeader navigation={this.props.navigation} />;
+      return (
+        <ClientHeader onPress={() => this.changeOpenMore()} navigation={this.props.navigation} />
+      );
     }
   }
 
   resolveData(data) {
     const obj = { 0: 'Select product' };
-    console.log(data);
     if (data && data.length > 0) {
       _.map(data, v => Object.assign(obj, { [v.id]: v.name }));
     }
-    console.log(obj);
     return obj;
   }
 
@@ -61,6 +73,23 @@ class AddProductEntry extends Component {
       );
     }
     return obj;
+  }
+
+  onSuccessPress() {
+    this.props.fetchFilterClientsList();
+    this.props.updateProductEntryProps('success', false);
+    this.props.navigation.navigate('listClient');
+  }
+
+  onSubmit() {
+    const rule = {
+      qty: ['required', 'qty'],
+      product_id: 'required',
+      amount: ['required', 'amount'],
+    };
+    this.props
+      .validate(this.props, rule, PRODUCT_ENTRY_ERROR)
+      .then(() => this.props.addProductEntry(this.props));
   }
 
   render() {
@@ -79,75 +108,68 @@ class AddProductEntry extends Component {
       loading,
     } = this.props;
     return (
-      <View style={containerStyle}>
-        {this.resolveMore()}
-        <ScrollView>
-          <InputText
-            label="Qty"
-            value={qty}
-            error={'qty' in error}
-            errorText={'qty' in error && error.qty[0]}
-            onChangeText={value => this.props.updateProductEntryProps('qty', value)}
-          />
-          <InputSelect
-            label="Product"
-            selectedValue={product_id}
-            data={this.resolveData(this.props.products)}
-            error={'product_id' in error}
-            errorText={'product_id' in error && error.product_id[0]}
-            onValueChange={value => this.props.updateProductEntryProps('product_id', value)}
-          />
-          <InputSelect
-            label="Product Type"
-            selectedValue={product_type_id}
-            data={this.resolveProductType()}
-            error={'product_type_id' in error}
-            errorText={'product_type_id' in error && error.product_type_id[0]}
-            onValueChange={value => this.props.updateProductEntryProps('product_type_id', value)}
-          />
-          <InputText
-            error={'amount' in error}
-            errorText={'amount' in error && error.amount[0]}
-            label="Amount"
-            value={amount}
-            onChangeText={value => this.props.updateProductEntryProps('amount', value)}
-          />
-          <InputText
-            error={'remark' in error}
-            errorText={'remark' in error && error.remark[0]}
-            label="Remark"
-            value={remark}
-            onChangeText={value => this.props.updateProductEntryProps('remark', value)}
-          />
-          <InputError
-            visible={Object.keys(error) < 1 && errorMessage}
-            errorText={errorMessage && errorMessage}
-          />
-        </ScrollView>
-        <View>
-          <InputButton
-            title="Add Product"
-            onPress={() =>
-              this.props.addProductEntry({
-                product_id,
-                product_type_id,
-                amount,
-                qty,
-                remark,
-                user_id: id,
-              })
-            }
-            loading={loading}
-          />
+      <TouchableWithoutFeedback
+        onPressIn={() =>
+          this.setState({
+            openMore: false,
+          })
+        }
+      >
+        <View style={containerStyle}>
+          {this.resolveMore()}
+          <ScrollView>
+            <InputSelect
+              label="Product"
+              selectedValue={product_id}
+              data={this.resolveData(this.props.products)}
+              error={'product_id' in error}
+              errorText={'product_id' in error && error.product_id[0]}
+              onValueChange={value => this.props.updateProductEntryProps('product_id', value)}
+            />
+            <InputSelect
+              label="Product Type"
+              selectedValue={product_type_id}
+              data={this.resolveProductType()}
+              error={'product_type_id' in error}
+              errorText={'product_type_id' in error && error.product_type_id[0]}
+              onValueChange={value => this.props.updateProductEntryProps('product_type_id', value)}
+            />
+            <InputText
+              label="Qty"
+              value={qty}
+              error={'qty' in error}
+              errorText={'qty' in error && error.qty[0]}
+              onChangeText={value => this.props.updateProductEntryProps('qty', value)}
+              keyboardType="numeric"
+            />
+            <InputText
+              error={'amount' in error}
+              errorText={'amount' in error && error.amount[0]}
+              label="Amount"
+              value={amount}
+              onChangeText={value => this.props.updateProductEntryProps('amount', value)}
+              keyboardType="numeric"
+            />
+            <InputText
+              error={'remark' in error}
+              errorText={'remark' in error && error.remark[0]}
+              label="Remark"
+              value={remark}
+              multiline
+              numberOfLines={10}
+              onChangeText={value => this.props.updateProductEntryProps('remark', value)}
+            />
+            <InputError
+              visible={Object.keys(error) < 1 && errorMessage}
+              errorText={errorMessage && errorMessage}
+            />
+          </ScrollView>
+          <View>
+            <InputButton title="Add" onPress={() => this.onSubmit()} loading={loading} />
+          </View>
+          <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
         </View>
-        <SuccessModal
-          visible={success}
-          onPress={() => {
-            this.props.updateProductEntryProps('success', false);
-          }}
-          text={message}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -196,5 +218,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addProductEntry, updateProductEntryProps }
+  { addProductEntry, updateProductEntryProps, fetchProductsList, fetchFilterClientsList, validate }
 )(AddProductEntry);

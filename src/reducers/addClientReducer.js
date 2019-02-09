@@ -15,6 +15,7 @@ const intState = {
   email: '',
   phone: '',
   area: '',
+  alter_phone: '',
   id: 0,
 };
 

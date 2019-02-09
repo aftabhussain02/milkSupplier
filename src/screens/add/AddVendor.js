@@ -3,7 +3,13 @@ import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { InputText, InputButton, SuccessModal, InputError, InputSelect } from '../../component';
-import { updateAddVendorProps, addVendor, fetchvendorsList } from '../../actions';
+import {
+  updateAddVendorProps,
+  addVendor,
+  fetchvendorsList,
+  validate,
+  ADD_VENDOR_ERROR,
+} from '../../actions';
 
 class AddVendorProfile extends Component {
   componentWillReceiveProps(nextProps) {
@@ -15,6 +21,7 @@ class AddVendorProfile extends Component {
   onSuccessPress() {
     this.props.fetchvendorsList();
     this.props.updateAddVendorProps('success', false);
+    this.props.navigation.goBack();
   }
 
   resolveData(data) {
@@ -36,6 +43,18 @@ class AddVendorProfile extends Component {
     return obj;
   }
 
+  onSubmit() {
+    const rule = {
+      name: ['required', 'letters'],
+      phone: ['required', 'phone'],
+      product_id: ['required'],
+      alter_phone: ['nullable', 'phone'],
+    };
+    this.props
+      .validate(this.props, rule, ADD_VENDOR_ERROR)
+      .then(() => this.props.addVendor(this.props));
+  }
+
   render() {
     const { containerStyle } = styles;
     const {
@@ -49,6 +68,7 @@ class AddVendorProfile extends Component {
       phone,
       product_id,
       product_type_id,
+      alter_phone,
     } = this.props;
     return (
       <View style={containerStyle}>
@@ -68,20 +88,21 @@ class AddVendorProfile extends Component {
             errorText={'product_id' in error && error.product_id[0]}
             onValueChange={value => this.props.updateAddVendorProps('product_id', value)}
           />
-          <InputSelect
-            label="Product Type"
-            selectedValue={product_type_id && product_type_id.toString()}
-            data={this.resolveProductType()}
-            error={'product_type_id' in error}
-            errorText={'product_type_id' in error && error.product_type_id[0]}
-            onValueChange={value => this.props.updateAddVendorProps('product_type_id', value)}
-          />
           <InputText
             label="Phone"
             value={phone}
             error={'phone' in error}
             errorText={'phone' in error && error.phone[0]}
             onChangeText={value => this.props.updateAddVendorProps('phone', value)}
+            keyboardType="numeric"
+          />
+          <InputText
+            label="Alter Phone"
+            value={alter_phone}
+            error={'alter_phone' in error}
+            errorText={'alter_phone' in error && error.alter_phone[0]}
+            onChangeText={value => this.props.updateAddVendorProps('alter_phone', value)}
+            keyboardType="numeric"
           />
           <InputText
             label="Email"
@@ -96,11 +117,7 @@ class AddVendorProfile extends Component {
           />
         </ScrollView>
         <View>
-          <InputButton
-            title="Save Changes"
-            onPress={() => this.props.addVendor(this.props)}
-            loading={loading}
-          />
+          <InputButton title="Add" onPress={() => this.onSubmit()} loading={loading} />
         </View>
         <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
       </View>
@@ -132,6 +149,7 @@ const mapStateToProps = state => {
     product_id,
     product_type_id,
     id,
+    alter_phone,
   } = state.addVendor;
   const { data: products } = state.fetchProduct;
   return {
@@ -148,10 +166,11 @@ const mapStateToProps = state => {
     product_type_id,
     id,
     products,
+    alter_phone,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { addVendor, updateAddVendorProps, fetchvendorsList }
+  { addVendor, updateAddVendorProps, fetchvendorsList, validate }
 )(AddVendorProfile);

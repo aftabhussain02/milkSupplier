@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { BORDER_COLOR } from '../constant';
+import { ACCENT_COLOR } from '../constant';
 
 export const SectionTitle = ({ key, title }) => (
   <View style={styles.containerStyle} key={key}>
@@ -10,14 +10,14 @@ export const SectionTitle = ({ key, title }) => (
 
 const styles = {
   containerStyle: {
-    padding: 10,
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderColor: BORDER_COLOR,
+    width: '14%',
+    position: 'absolute',
+    left: 20,
+    top: 10,
   },
   textStyle: {
     fontWeight: 'bold',
+    fontSize: 18,
+    color: ACCENT_COLOR,
   },
 };

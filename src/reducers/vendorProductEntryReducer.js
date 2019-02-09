@@ -16,6 +16,9 @@ const intState = {
   loading: false,
   errorMessage: '',
   message: '',
+  amount_qty: '',
+  fat: '',
+  fat_rate: '',
 };
 
 export default (state = intState, action) => {

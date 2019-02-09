@@ -15,7 +15,6 @@ export const attemptLogin = (email, password) => async dispatch => {
   });
   return Axios.post(loginApi, { email, password })
     .then(async ({ data }) => {
-      console.log(data);
       try {
         await AsyncStorage.setItem(tokenName, `Bearer ${data.data.token}`);
       } catch (e) {
@@ -32,7 +31,7 @@ export const attemptLogin = (email, password) => async dispatch => {
       if (!e.success) {
         return dispatch({
           type: LOGIN_ERROR,
-          payload: e,
+          payload: e.response.data,
         });
       }
 

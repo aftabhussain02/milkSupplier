@@ -27,7 +27,6 @@ export const addCredit = ({ credit_user_id, amount }) => dispatch =>
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: ADD_CREDIT_SUCCESS,
           payload: data,

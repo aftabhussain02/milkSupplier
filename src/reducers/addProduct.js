@@ -12,6 +12,8 @@ const intState = {
   message: '',
   loading: false,
   name: '',
+  type: '',
+  units: [],
 };
 
 export default (state = intState, action) => {
@@ -23,6 +25,7 @@ export default (state = intState, action) => {
       return { ...state, error: {}, loading: true, errorMessage: '' };
 
     case PRODUCT_ERROR:
+      console.log(action.payload);
       return {
         ...state,
         error: action.payload.data || {},

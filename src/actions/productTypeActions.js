@@ -40,7 +40,6 @@ export const addProductType = ({ name, product_id }) => dispatch =>
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: PRODUCT_TYPE_SUCCESS,
           payload: data,

@@ -3,36 +3,37 @@ import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { InputText, InputButton, SuccessModal, InputError, InputSelect } from '../../component';
-import { updateEditVendorProps, editVendor, fetchvendorsList } from '../../actions';
+import {
+  updateEditVendorProps,
+  editVendor,
+  fetchvendorsList,
+  validate,
+  EDIT_VENDOR_PROFILE_ERROR,
+} from '../../actions';
 
 class EditVendorProfile extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.product_id !== this.props.product_id) {
-      this.resolveProductType();
-    }
-  }
-
   onSuccessPress() {
     this.props.fetchvendorsList();
     this.props.updateEditVendorProps('success', false);
     this.props.navigation.navigate('listVendor');
   }
 
+  onSubmit() {
+    const rule = {
+      name: ['required', 'letters'],
+      phone: ['required', 'phone'],
+      product_id: 'required',
+      alter_phone: ['nullable', 'phone'],
+    };
+    this.props
+      .validate(this.props, rule, EDIT_VENDOR_PROFILE_ERROR)
+      .then(() => this.props.editVendor(this.props));
+  }
+
   resolveData(data) {
     const obj = { 0: 'Select product' };
     if (data && data.length > 0) {
-      _.map(data, v => Object.assign(obj, { [v.id]: v.name }));
-    }
-    return obj;
-  }
-
-  resolveProductType() {
-    const obj = { 0: 'Select product type' };
-    const { products, product_id } = this.props;
-    if (product_id && product_id != '0') {
-      _.map(_.find(products, v => v.id == product_id).type, v =>
-        Object.assign(obj, { [v.id]: v.name })
-      );
+      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
     }
     return obj;
   }
@@ -50,6 +51,7 @@ class EditVendorProfile extends Component {
       phone,
       product_id,
       product_type_id,
+      alter_phone,
     } = this.props;
     return (
       <View style={containerStyle}>
@@ -69,20 +71,21 @@ class EditVendorProfile extends Component {
             errorText={'product_id' in error && error.product_id[0]}
             onValueChange={value => this.props.updateEditVendorProps('product_id', value)}
           />
-          <InputSelect
-            label="Product Type"
-            selectedValue={product_type_id && product_type_id.toString()}
-            data={this.resolveProductType()}
-            error={'product_type_id' in error}
-            errorText={'product_type_id' in error && error.product_type_id[0]}
-            onValueChange={value => this.props.updateEditVendorProps('product_type_id', value)}
-          />
           <InputText
             label="Phone"
             value={phone}
             error={'phone' in error}
             errorText={'phone' in error && error.phone[0]}
             onChangeText={value => this.props.updateEditVendorProps('phone', value)}
+            keyboardType="numeric"
+          />
+          <InputText
+            label="Alternate Number"
+            value={alter_phone}
+            error={'alter_phone' in error}
+            errorText={'alter_phone' in error && error.alter_phone[0]}
+            onChangeText={value => this.props.updateEditVendorProps('alter_phone', value)}
+            keyboardType="numeric"
           />
           <InputText
             label="Email"
@@ -97,11 +100,7 @@ class EditVendorProfile extends Component {
           />
         </ScrollView>
         <View>
-          <InputButton
-            title="Save Changes"
-            onPress={() => this.props.editVendor(this.props)}
-            loading={loading}
-          />
+          <InputButton title="Save Changes" onPress={() => this.onSubmit()} loading={loading} />
         </View>
         <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
       </View>
@@ -133,9 +132,10 @@ const mapStateToProps = state => {
     product_id,
     product_type_id,
     id,
+    alter_phone,
   } = state.editVendor;
-  const { data: products } = state.fetchProduct;
   console.log(state.editVendor);
+  const { data: products } = state.fetchProduct;
   return {
     success,
     error,
@@ -150,10 +150,11 @@ const mapStateToProps = state => {
     product_type_id,
     id,
     products,
+    alter_phone,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { editVendor, updateEditVendorProps, fetchvendorsList }
+  { editVendor, updateEditVendorProps, fetchvendorsList, validate }
 )(EditVendorProfile);

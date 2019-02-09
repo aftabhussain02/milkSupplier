@@ -1,29 +1,16 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import _ from 'lodash';
+import FloatingLabel from 'react-native-floating-labels';
 import { Icon } from 'react-native-elements';
 import { InputError } from './InputError';
+import { ACCENT_COLOR } from '../constant';
 
 export class InputText extends Component {
   state = {
     focus: false,
     autoCompleteFiltered: [],
   };
-
-  onChangeText(value) {
-    if (this.props.autoCompleteData) {
-      if (!value) {
-        this.setState({
-          autoCompleteFiltered: [],
-        });
-      } else {
-        this.setState({
-          autoCompleteFiltered: this.props.autoCompleteData.filter(v => v.includes(value)),
-        });
-      }
-    }
-    this.props.onChangeText(value);
-  }
 
   hidden(hide) {
     if (hide) {
@@ -55,53 +42,40 @@ export class InputText extends Component {
 
     return (
       <View style={container}>
-        <Text style={labelStyle}>{label}</Text>
-        {moneySign ? (
-          <Icon
-            name="attach-money"
-            containerStyle={{
-              position: 'absolute',
-              left: '32%',
-            }}
-          />
-        ) : (
-          <View />
+        {children || (
+          <FloatingLabel
+            multiline={multiline}
+            numberOfLines={numberOfLines}
+            value={value}
+            onChangeText={onChangeText}
+            keyboardType={keyboardType}
+            style={[textInputContainer, multiline && { height: 'auto' }]}
+            inputStyle={[inputStyle, error && { borderColor: 'red' }, multiline && { height: 100 }]}
+            labelStyle={labelStyle}
+            secureTextEntry={secureTextEntry}
+          >
+            {label}
+          </FloatingLabel>
         )}
-        <View style={textInputContainer}>
-          {children || (
-            <TextInput
-              value={value}
-              onChangeText={v => this.onChangeText(v)}
-              secureTextEntry={secureTextEntry}
-              onFocus={() => this.setState({ focus: true })}
-              onBlur={() => this.setState({ focus: false })}
-              multiline={multiline}
-              numberOfLines={numberOfLines}
-              style={[
-                inputStyle,
-                this.state.focus && { elevation: 3, borderWidth: 0 },
-                moneySign && { paddingLeft: 30 },
-                error && { borderColor: 'red' },
-              ]}
-              keyboardType={keyboardType}
-            />
-          )}
-          {autoCompleteData && this.state.focus && (
-            <View style={autoCompleteContainer}>
-              {_.map(this.state.autoCompleteFiltered, v => (
-                <TouchableOpacity
-                  onPress={() => {
-                    onChangeText(v);
-                    Keyboard.dismiss();
-                  }}
-                >
-                  <Text style={autoCompleteText}>{v}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-          <InputError visible={error} errorText={errorText} containerStyle={{ marginBottom: 0 }} />
-        </View>
+        {autoCompleteData && this.state.focus && (
+          <View style={autoCompleteContainer}>
+            {_.map(this.state.autoCompleteFiltered, v => (
+              <TouchableOpacity
+                onPress={() => {
+                  onChangeText(v);
+                  Keyboard.dismiss();
+                }}
+              >
+                <Text style={autoCompleteText}>{v}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+        <InputError
+          visible={error}
+          errorText={errorText}
+          containerStyle={{ marginBottom: 0, width: 280 }}
+        />
       </View>
     );
   }
@@ -113,28 +87,19 @@ export class InputText extends Component {
 
 const styles = {
   container: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
+    flex: 1,
   },
   labelStyle: {
-    fontWeight: 'bold',
-    width: '30%',
+    color: 'gray',
+    marginBottom: 10,
   },
   inputStyle: {
-    borderRadius: 6,
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#CBCBCB',
-    paddingTop: 4,
-    paddingBottom: 4,
-    paddingRight: 20,
-    paddingLeft: 20,
+    borderWidth: 0,
+    borderColor: ACCENT_COLOR,
+    borderBottomWidth: 1,
   },
   textInputContainer: {
-    width: '70%',
+    width: 300,
   },
   autoCompleteContainer: {
     borderWidth: 1,

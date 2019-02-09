@@ -1,52 +1,89 @@
 import React, { Component } from 'react';
-import { View, SectionList } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { SectionTitle, SectionListItem } from '../../component';
+import { SectionListItem, CustomModel, ActionSheetButton } from '../../component';
 import { initializeEditVendor, fetchvendorsList, selectedVendor } from '../../actions';
 
 class ListVendors extends Component {
-  componentDidMount() {
-    this.props.fetchvendorsList();
-  }
+  state = {
+    actionSheetVisible: false,
+    phone: '',
+    alter_phone: '',
+    item: {},
+  };
 
-  resolveData() {
-    const { data } = this.props;
-    const obj = [];
-    if (data && Object.keys(data).length > 0) {
-      _.map(data, (v, i) => {
-        obj.push({
-          title: i,
-          data: v,
-        });
-      });
-    }
-    return obj;
-  }
+  resolveActionSheet = item => {
+    this.setState({
+      actionSheetVisible: true,
+      item,
+    });
+  };
 
-  resolveList() {
+  actionSheet() {
+    const { item } = this.state;
     return (
-      <SectionList
-        renderItem={({ item, index, section }) => (
-          <SectionListItem
-            key={index}
-            {...item}
-            onPress={() => {
-              this.props.selectedVendor(item);
-              this.props.initializeEditVendor(item);
-              this.props.navigation.navigate('addVendorProductEntry');
-            }}
+      <CustomModel
+        visible={this.state.actionSheetVisible}
+        onPressOut={() =>
+          this.setState({
+            actionSheetVisible: false,
+          })
+        }
+      >
+        <View style={{ width: '90%' }}>
+          <ActionSheetButton
+            onPress={() => this.routeInit(item, 'addVendorProductEntry')}
+            title="Add Purchase"
           />
-        )}
-        renderSectionHeader={({ section: { title } }) => <SectionTitle title={title} />}
-        sections={this.resolveData()}
-        keyExtractor={(item, index) => item + index}
-      />
+          <ActionSheetButton
+            onPress={() => this.routeInit(item, 'vendorProfile')}
+            title="View Vendor Profile"
+          />
+          <ActionSheetButton
+            onPress={() => this.routeInit(item, 'addDebit')}
+            title="Add Send Money"
+          />
+        </View>
+      </CustomModel>
     );
   }
 
+  routeInit(item, name) {
+    this.setState({
+      actionSheetVisible: false,
+    });
+    this.props.selectedVendor(item);
+    this.props.initializeEditVendor(item);
+    this.props.navigation.navigate(name);
+  }
+
+  resolveList() {
+    const { data } = this.props;
+    if (data && Object.keys(data).length > 0) {
+      return _.map(this.props.data, (item, index) => (
+        <SectionListItem
+          key={index}
+          amountInMinus
+          item={item}
+          productName={item.vendor_product_name}
+          onPress={() => {
+            this.props.selectedVendor(item);
+            this.props.initializeEditVendor(item);
+            this.props.navigation.navigate('vendorProfile');
+          }}
+          onPressMore={d => this.resolveActionSheet(d)}
+        />
+      ));
+    }
+  }
   render() {
-    return <View>{this.resolveList()}</View>;
+    return (
+      <View>
+        {this.resolveList()}
+        {this.actionSheet()}
+      </View>
+    );
   }
 }
 

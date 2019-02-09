@@ -27,7 +27,6 @@ export const addDebit = ({ debit_user_id, amount }) => dispatch =>
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: ADD_DEBIT_SUCCESS,
           payload: data,

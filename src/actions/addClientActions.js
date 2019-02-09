@@ -12,7 +12,7 @@ export const updateAddClientProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const addClient = ({ name, email, phone, area, id }) => dispatch =>
+export const addClient = ({ name, email, phone, area, id, alter_phone }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: ADD_CLIENT_ATTEMPT,
@@ -25,11 +25,11 @@ export const addClient = ({ name, email, phone, area, id }) => dispatch =>
         email,
         phone,
         area,
+        alter_phone,
       },
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: ADD_CLIENT_SUCCESS,
           payload: data,

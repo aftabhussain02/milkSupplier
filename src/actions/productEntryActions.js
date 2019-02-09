@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { getStorageParams, addProductEntryApi } from '../constant';
+import { getStorageParams, productEntryApi } from '../constant';
 import {
   UPDATE_PRODUCT_ENTRY_PROPS,
   PRODUCT_ENTRY_SUCCESS,
@@ -16,28 +16,28 @@ export const addProductEntry = ({
   product_id,
   product_type_id,
   amount,
-  user_id,
+  id: user_id,
   qty,
+  remark,
 }) => dispatch =>
   getStorageParams().then(({ headers }) => {
-    console.log(addProductEntryApi);
     dispatch({
       type: PRODUCT_ENTRY_ATTEMPT,
     });
 
     return Axios.post(
-      addProductEntryApi,
+      productEntryApi,
       {
         product_id,
         product_type_id,
         amount,
         user_id,
         qty,
+        remark,
       },
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: PRODUCT_ENTRY_SUCCESS,
           payload: data,

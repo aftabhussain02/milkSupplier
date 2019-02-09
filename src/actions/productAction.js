@@ -12,7 +12,6 @@ export const fetchProductsList = () => dispatch =>
   getStorageParams().then(({ headers }) =>
     Axios.get(productApi, { headers })
       .then(({ data }) => {
-        console.log(data.data);
         dispatch({
           type: FETCH_PRODUCTS,
           payload: data.data,
@@ -26,7 +25,7 @@ export const updateProductProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const addProduct = ({ name }) => dispatch =>
+export const addProduct = ({ name, type, units }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: PRODUCT_ATTEMPT,
@@ -36,11 +35,12 @@ export const addProduct = ({ name }) => dispatch =>
       productApi,
       {
         name,
+        type,
+        units,
       },
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: PRODUCT_SUCCESS,
           payload: data,

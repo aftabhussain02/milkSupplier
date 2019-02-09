@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { getStorageParams } from '../../constant/storage';
-import { fetchProductsList, fetchCustomersList, fetchvendorsList } from '../../actions';
+import {
+  fetchProductsList,
+  fetchCustomersList,
+  fetchvendorsList,
+  fetchFilterClientsList,
+  fetchFilterVendorsList,
+} from '../../actions';
 
 class AuthCheck extends Component {
   async componentDidMount() {
@@ -11,6 +17,8 @@ class AuthCheck extends Component {
         .then(u => {
           if (u.token) {
             try {
+              this.props.fetchFilterClientsList();
+              this.props.fetchFilterVendorsList();
               this.props.fetchProductsList();
               this.props.fetchCustomersList();
               this.props.fetchvendorsList();
@@ -39,5 +47,11 @@ class AuthCheck extends Component {
 
 export default connect(
   null,
-  { fetchProductsList, fetchCustomersList, fetchvendorsList }
+  {
+    fetchProductsList,
+    fetchCustomersList,
+    fetchvendorsList,
+    fetchFilterClientsList,
+    fetchFilterVendorsList,
+  }
 )(AuthCheck);

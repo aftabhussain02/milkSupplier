@@ -11,5 +11,6 @@ const styles = {
   container: {
     alignItems: 'center',
     flex: 1,
+    paddingBottom: 20,
   },
 };

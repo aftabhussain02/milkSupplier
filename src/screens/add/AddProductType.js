@@ -3,9 +3,31 @@ import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { InputText, InputSelect, InputButton, SuccessModal, InputError } from '../../component';
-import { updateProductTypeProps, addProductType } from '../../actions';
+import {
+  updateProductTypeProps,
+  addProductType,
+  fetchProductsList,
+  validate,
+  PRODUCT_TYPE_ERROR,
+} from '../../actions';
 
 class AddProductType extends Component {
+  onSubmit() {
+    const rule = {
+      product_id: 'required',
+      name: ['required', 'letters'],
+    };
+    this.props
+      .validate(this.props, rule, PRODUCT_TYPE_ERROR)
+      .then(() => this.props.addProductType(this.props));
+  }
+
+  onSuccessPress() {
+    this.props.fetchProductsList();
+    this.props.updateProductTypeProps('success', false);
+    this.props.navigation.goBack();
+  }
+
   resolveData(data) {
     const obj = { 0: 'Select product' };
     if (data && data.length > 0) {
@@ -41,24 +63,9 @@ class AddProductType extends Component {
           />
         </ScrollView>
         <View>
-          <InputButton
-            title="Add Product"
-            onPress={() =>
-              this.props.addProductType({
-                product_id,
-                name,
-              })
-            }
-            loading={loading}
-          />
+          <InputButton title="Add" onPress={() => this.onSubmit()} loading={loading} />
         </View>
-        <SuccessModal
-          visible={success}
-          onPress={() => {
-            this.props.updateProductTypeProps('success', false);
-          }}
-          text={message}
-        />
+        <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
       </View>
     );
   }
@@ -91,5 +98,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addProductType, updateProductTypeProps }
+  { addProductType, updateProductTypeProps, fetchProductsList, validate }
 )(AddProductType);

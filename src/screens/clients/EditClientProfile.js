@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { InputText, InputButton, SuccessModal, InputError } from '../../component';
-import { updateEditClientProps, editClient, fetchCustomersList } from '../../actions';
+import {
+  updateEditClientProps,
+  editClient,
+  fetchCustomersList,
+  EDIT_CLIENT_PROFILE_ERROR,
+  validate,
+} from '../../actions';
 
 class EditClientProfile extends Component {
   onSuccessPress() {
@@ -11,9 +17,32 @@ class EditClientProfile extends Component {
     this.props.navigation.navigate('listClient');
   }
 
+  onPress() {
+    const rules = {
+      name: ['required', 'letters'],
+      phone: ['required', 'phone'],
+      area: 'required',
+      alter_phone: ['nullable', 'phone'],
+    };
+    this.props
+      .validate(this.props, rules, EDIT_CLIENT_PROFILE_ERROR)
+      .then(() => this.props.editClient(this.props));
+  }
+
   render() {
     const { containerStyle } = styles;
-    const { success, error, errorMessage, message, loading, name, email, phone, area } = this.props;
+    const {
+      success,
+      error,
+      errorMessage,
+      message,
+      loading,
+      name,
+      email,
+      phone,
+      area,
+      alter_phone,
+    } = this.props;
     return (
       <View style={containerStyle}>
         <ScrollView>
@@ -39,6 +68,13 @@ class EditClientProfile extends Component {
             onChangeText={value => this.props.updateEditClientProps('phone', value)}
           />
           <InputText
+            label="Alternate Number"
+            value={alter_phone}
+            error={'alter_phone' in error}
+            errorText={'alter_phone' in error && error.alter_phone[0]}
+            onChangeText={value => this.props.updateEditClientProps('alter_phone', value)}
+          />
+          <InputText
             label="Email"
             value={email}
             error={'email' in error}
@@ -51,11 +87,7 @@ class EditClientProfile extends Component {
           />
         </ScrollView>
         <View>
-          <InputButton
-            title="Save Changes"
-            onPress={() => this.props.editClient(this.props)}
-            loading={loading}
-          />
+          <InputButton title="Save Changes" onPress={() => this.onPress()} loading={loading} />
         </View>
         <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
       </View>
@@ -85,8 +117,8 @@ const mapStateToProps = state => {
     phone,
     area,
     id,
+    alter_phone,
   } = state.editClient;
-  console.log(state.editClient);
   return {
     success,
     error,
@@ -98,10 +130,11 @@ const mapStateToProps = state => {
     phone,
     area,
     id,
+    alter_phone,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { editClient, updateEditClientProps, fetchCustomersList }
+  { editClient, updateEditClientProps, fetchCustomersList, validate }
 )(EditClientProfile);

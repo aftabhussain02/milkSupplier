@@ -18,7 +18,7 @@ export const updateEditClientProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const editClient = ({ name, email, phone, area, id }) => dispatch =>
+export const editClient = ({ name, email, phone, area, id, alter_phone }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: EDIT_CLIENT_PROFILE_ATTEMPT,
@@ -31,12 +31,12 @@ export const editClient = ({ name, email, phone, area, id }) => dispatch =>
         email,
         phone,
         area,
+        alter_phone,
         _method: 'put',
       },
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: EDIT_CLIENT_PROFILE_SUCCESS,
           payload: data,

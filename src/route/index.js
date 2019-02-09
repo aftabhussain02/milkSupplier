@@ -9,7 +9,7 @@ import { Icon } from 'react-native-elements';
 import Home from '../screens/home/Home';
 import AuthCheck from '../screens/auth/AuthCheck';
 import Login from '../screens/auth/Login';
-import { ACCENT_COLOR } from '../constant';
+import { ACCENT_COLOR, logout } from '../constant';
 import ListClients from '../screens/clients/ListClients';
 import Setting from '../screens/setting/Setting';
 import { MenuHeader, BackHeader } from '../component';
@@ -25,6 +25,13 @@ import AddProduct from '../screens/add/AddProduct';
 import AddProductType from '../screens/add/AddProductType';
 import AddClient from '../screens/add/AddClient';
 import AddVendor from '../screens/add/AddVendor';
+import AddCredit from '../screens/clients/AddCredit';
+import AddDebit from '../screens/vendors/AddDebit';
+import Sales from '../screens/home/Sales';
+import EditSales from '../screens/home/EditSales';
+import Purchases from '../screens/home/Purchases';
+import EditPurchase from '../screens/home/EditPurchase';
+import ChangePassword from '../screens/setting/ChangePassword';
 
 const Auth = createStackNavigator({
   login: {
@@ -42,13 +49,57 @@ const HomeStack = createStackNavigator({
       header: <MenuHeader title="Home" disabledRightIcon />,
     }),
   },
+  sales: {
+    screen: Sales,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Sales Entries" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editSales: {
+    screen: EditSales,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Entry"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
+  purchases: {
+    screen: Purchases,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Purchases Entries" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editPurchases: {
+    screen: EditPurchase,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Entry"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
 });
 
 const ClientsStack = createStackNavigator({
   listClient: {
     screen: ListClients,
     navigationOptions: ({ navigation }) => ({
-      header: <MenuHeader title="Clients" disabledRightIcon />,
+      header: (
+        <MenuHeader
+          title="Clients"
+          rightIconName="add"
+          onRightIconPress={() => navigation.navigate('addClient')}
+        />
+      ),
     }),
   },
   addProductEntry: {
@@ -56,7 +107,7 @@ const ClientsStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       header: (
         <BackHeader
-          title="Add Product Entry"
+          title="Add Sales entry"
           rightIconName="more-vert"
           navigation={navigation}
           onRightIconPress={() => navigation.state.params.manageMore()}
@@ -82,25 +133,10 @@ const ClientsStack = createStackNavigator({
       header: <BackHeader title="Edit Profile" navigation={navigation} disableRightIcon />,
     }),
   },
-});
-
-const AddStack = createStackNavigator({
-  addScreen: {
-    screen: AddScreen,
+  addCredit: {
+    screen: AddCredit,
     navigationOptions: ({ navigation }) => ({
-      header: <MenuHeader title="Add" disabledRightIcon />,
-    }),
-  },
-  addProduct: {
-    screen: AddProduct,
-    navigationOptions: ({ navigation }) => ({
-      header: <BackHeader title="Add Product" navigation={navigation} disableRightIcon />,
-    }),
-  },
-  addProductType: {
-    screen: AddProductType,
-    navigationOptions: ({ navigation }) => ({
-      header: <BackHeader title="Add Product Type" navigation={navigation} disableRightIcon />,
+      header: <BackHeader title="Add Credit" navigation={navigation} disableRightIcon />,
     }),
   },
   addClient: {
@@ -109,10 +145,19 @@ const AddStack = createStackNavigator({
       header: <BackHeader title="Add Client" navigation={navigation} disableRightIcon />,
     }),
   },
-  addVendor: {
-    screen: AddVendor,
+});
+
+const AddStack = createStackNavigator({
+  addProduct: {
+    screen: AddProduct,
     navigationOptions: ({ navigation }) => ({
-      header: <BackHeader title="Add Vendor" navigation={navigation} disableRightIcon />,
+      header: <BackHeader title="Add Product" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  addScreen: {
+    screen: AddScreen,
+    navigationOptions: ({ navigation }) => ({
+      header: <MenuHeader title="Add" disabledRightIcon />,
     }),
   },
 });
@@ -121,7 +166,13 @@ const VendorStack = createStackNavigator({
   listVendor: {
     screen: ListVendors,
     navigationOptions: ({ navigation }) => ({
-      header: <MenuHeader title="Vendors" disabledRightIcon />,
+      header: (
+        <MenuHeader
+          title="Vendors"
+          rightIconName="add"
+          onRightIconPress={() => navigation.navigate('addVendor')}
+        />
+      ),
     }),
   },
   addVendorProductEntry: {
@@ -129,7 +180,7 @@ const VendorStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       header: (
         <BackHeader
-          title="Add Product Entry"
+          title="Add Purchase Entry"
           rightIconName="more-vert"
           navigation={navigation}
           onRightIconPress={() => navigation.state.params.manageMore()}
@@ -155,15 +206,87 @@ const VendorStack = createStackNavigator({
       header: <BackHeader title="Edit Profile" navigation={navigation} disableRightIcon />,
     }),
   },
+  addDebit: {
+    screen: AddDebit,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Debit" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  addVendor: {
+    screen: AddVendor,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Add Vendor" navigation={navigation} disableRightIcon />,
+    }),
+  },
 });
 
 const SettingStack = createStackNavigator({
   setting: {
     screen: Setting,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <MenuHeader
+          title="Setting"
+          onRightIconPress={() => {
+            logout().then(() => navigation.navigate('AuthCheck'));
+          }}
+        />
+      ),
+    }),
+  },
+  changePassword: {
+    screen: ChangePassword,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Change Password" navigation={navigation} disableRightIcon />,
+    }),
   },
 });
 
+HomeStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 ClientsStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+AddStack.navigationOptions = ({ navigation }) => {
+  const tabBarVisible = false;
+  // if (navigation.state.index > 0) {
+  //   tabBarVisible = false;
+  // }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+VendorStack.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+SettingStack.navigationOptions = ({ navigation }) => {
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
@@ -220,7 +343,7 @@ const App = createAppContainer(
         },
       }),
       tabBarOptions: {
-        activeTintColor: '#333',
+        activeTintColor: ACCENT_COLOR,
         inactiveTintColor: 'gray',
         showLabel: false,
       },

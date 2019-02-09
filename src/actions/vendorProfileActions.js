@@ -18,9 +18,16 @@ export const updateEditVendorProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const editVendor = ({ name, email, phone, product_id, product_type_id, id }) => dispatch =>
+export const editVendor = ({
+  name,
+  email,
+  phone,
+  product_id,
+  product_type_id,
+  id,
+  alter_phone,
+}) => dispatch =>
   getStorageParams().then(({ headers }) => {
-    console.log(name, email, phone, product_id, product_type_id);
     dispatch({
       type: EDIT_VENDOR_PROFILE_ATTEMPT,
     });
@@ -33,6 +40,7 @@ export const editVendor = ({ name, email, phone, product_id, product_type_id, id
         phone,
         product_id,
         product_type_id,
+        alter_phone,
         _method: 'put',
       },
       { headers }

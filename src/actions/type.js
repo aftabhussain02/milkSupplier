@@ -11,6 +11,22 @@ export const PRODUCT_ENTRY_ATTEMPT = 'PRODUCT_ENTRY_attempt';
 export const PRODUCT_ENTRY_SUCCESS = 'PRODUCT_ENTRY_success';
 export const PRODUCT_ENTRY_ERROR = 'PRODUCT_ENTRY_error';
 
+export const UPDATE_EDIT_PRODUCT_ENTRY_PROPS = 'update_EDIT_product_entry_props';
+export const EDIT_PRODUCT_ENTRY_ATTEMPT = 'EDIT_PRODUCT_ENTRY_attempt';
+export const EDIT_PRODUCT_ENTRY_SUCCESS = 'EDIT_PRODUCT_ENTRY_success';
+export const EDIT_PRODUCT_ENTRY_ERROR = 'EDIT_PRODUCT_ENTRY_error';
+export const INITIALIZE_EDIT_PRODUCT_ENTRY = 'initialize_edit_PRODUCT_ENTRY';
+
+export const UPDATE_EDIT_VENDOR_PRODUCT_ENTRY_PROPS = 'update_EDIT_VENDOR_product_entry_props';
+export const EDIT_VENDOR_PRODUCT_ENTRY_ATTEMPT = 'EDIT_VENDOR_PRODUCT_ENTRY_attempt';
+export const EDIT_VENDOR_PRODUCT_ENTRY_SUCCESS = 'EDIT_VENDOR_PRODUCT_ENTRY_success';
+export const EDIT_VENDOR_PRODUCT_ENTRY_ERROR = 'EDIT_VENDOR_PRODUCT_ENTRY_error';
+export const INITIALIZE_EDIT_VENDOR_PRODUCT_ENTRY = 'initialize_edit_VENDOR_PRODUCT_ENTRY';
+
+export const DELETE_PRODUCT_ENTRY_ATTEMPT = 'DELETE_PRODUCT_ENTRY_attempt';
+export const DELETE_PRODUCT_ENTRY_SUCCESS = 'DELETE_PRODUCT_ENTRY_success';
+export const DELETE_PRODUCT_ENTRY_ERROR = 'DELETE_PRODUCT_ENTRY_error';
+
 export const FETCH_PRODUCTS = 'fetch_products';
 export const UPDATE_PRODUCT_PROPS = 'update_PRODUCT_props';
 export const PRODUCT_ATTEMPT = 'PRODUCT_attempt';
@@ -37,6 +53,8 @@ export const ADD_CLIENT_ERROR = 'ADD_CLIENT_error';
 export const LIST_VENDORS = 'LIST_VENDORS';
 export const SELECTED_VENDOR = 'SELECTED_VENDOR';
 
+export const LIST_CLIENT_PRODUCT_ENTRIES = 'list_client_product_entries';
+export const LIST_VENDOR_PRODUCT_ENTRIES = 'list_vendor_product_entries';
 export const UPDATE_VENDOR_PRODUCT_ENTRY_PROPS = 'update_VENDOR_product_entry_props';
 export const VENDOR_PRODUCT_ENTRY_ATTEMPT = 'VENDOR_PRODUCT_ENTRY_attempt';
 export const VENDOR_PRODUCT_ENTRY_SUCCESS = 'VENDOR_PRODUCT_ENTRY_success';
@@ -62,3 +80,8 @@ export const UPDATE_ADD_CREDIT_PROPS = 'update_ADD_CREDIT_props';
 export const ADD_CREDIT_ATTEMPT = 'ADD_CREDIT_attempt';
 export const ADD_CREDIT_SUCCESS = 'ADD_CREDIT_success';
 export const ADD_CREDIT_ERROR = 'ADD_CREDIT_error';
+
+export const UPDATE_CHANGE_PASSWORD_PROPS = 'update_CHANGE_PASSWORD_props';
+export const CHANGE_PASSWORD_ATTEMPT = 'CHANGE_PASSWORD_attempt';
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_success';
+export const CHANGE_PASSWORD_ERROR = 'CHANGE_PASSWORD_error';

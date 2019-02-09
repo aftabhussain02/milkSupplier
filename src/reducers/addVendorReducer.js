@@ -16,6 +16,7 @@ const intState = {
   phone: '',
   area: '',
   id: 0,
+  alter_phone: '',
 };
 
 export default (state = intState, action) => {

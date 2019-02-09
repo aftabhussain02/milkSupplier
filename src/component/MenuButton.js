@@ -1,29 +1,32 @@
 import React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableNativeFeedback, View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { ACCENT_COLOR } from '../constant';
 
 export const MenuButton = ({ title, onPress, iconName }) => {
   const { container, chevronStyle, iconContainer, titleStyle } = styles;
   return (
-    <TouchableOpacity onPress={onPress} style={{ width: '100%' }}>
+    <TouchableNativeFeedback onPress={onPress} style={{ width: '100%' }}>
       <View style={container}>
-        <Icon name={iconName} containerStyle={iconContainer} />
+        <Icon name={iconName} containerStyle={iconContainer} color={ACCENT_COLOR} />
         <Text style={titleStyle}>{title}</Text>
-        <Icon name="chevron-right" containerStyle={chevronStyle} />
+        <Icon color="gray" name="chevron-right" containerStyle={chevronStyle} />
       </View>
-    </TouchableOpacity>
+    </TouchableNativeFeedback>
   );
 };
 
-export const styles = {
+const styles = {
   container: {
     flexDirection: 'row',
-    width: '100%',
-    borderRadius: 6,
+    width: '94%',
+    borderRadius: 10,
     padding: 10,
     marginTop: 20,
     alignSelf: 'center',
     justifyContent: 'flex-start',
+    borderColor: ACCENT_COLOR,
+    borderWidth: 1,
   },
   chevronStyle: {
     alignSelf: 'flex-end',
@@ -34,5 +37,7 @@ export const styles = {
   titleStyle: {
     fontWeight: 'bold',
     flex: 1,
+    color: 'gray',
+    fontSize: 16,
   },
 };

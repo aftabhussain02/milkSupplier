@@ -15,6 +15,7 @@ export const InputButton = ({ title, onPress, loading, containerViewStyle }) => 
     borderRadius={6}
     color="#fff"
     loading={loading}
+    raised
   />
 );
 
@@ -22,6 +23,5 @@ const styles = {
   buttonContainerStyle: {
     width: 'auto',
     alignSelf: 'center',
-    borderWidth: 1,
   },
 };
