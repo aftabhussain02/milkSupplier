@@ -9,7 +9,7 @@ import {
 const intState = {
   qty: '',
   product_id: '',
-  product_type_id: '',
+  unit_type: '',
   amount: '',
   remark: '',
   error: {},

@@ -4,18 +4,24 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { InputText, InputSelect, InputButton, SuccessModal, InputError } from '../../component';
 import {
-  updateVendorProductEntryProps,
-  addVendorProductEntry,
+  updateEditVendorProductEntryProps,
+  editVendorProductEntry,
+  deleteVendorProductEntry,
   fetchFilterVendorsList,
   validate,
-  VENDOR_PRODUCT_ENTRY_ERROR,
-  fetchvendorsList,
+  EDIT_VENDOR_PRODUCT_ENTRY_ERROR,
 } from '../../actions';
 
-class AddVendorProductEntry extends Component {
+class EditVendorProductEntry extends Component {
   state = {
     success: false,
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({
+      delete: this.delete.bind(this),
+    });
+  }
 
   componentWillReceiveProps(nextProps) {
     const { fat, fat_rate, qty_amount, qty } = nextProps;
@@ -29,12 +35,31 @@ class AddVendorProductEntry extends Component {
     }
   }
 
-  onSuccessPress() {
-    this.props.fetchvendorsList();
-    this.props.fetchFilterVendorsList();
-    this.props.updateVendorProductEntryProps('success', false);
-    this.props.navigation.navigate('listVendor');
+  delete() {
+    const { id } = this.props;
+    this.props.deleteVendorProductEntry(id);
   }
+
+  resolveData(data) {
+    const obj = { 0: 'Select product' };
+    if (data && data.length > 0) {
+      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
+    }
+    return obj;
+  }
+
+  onSuccessPress() {
+    this.props.updateEditVendorProductEntryProps('success', false);
+    this.props.fetchFilterVendorsList();
+    this.props.navigation.goBack();
+  }
+
+  calculateTotalAmount = ({ fat = 0, fat_rate = 0, qty_amount = 0, qty = 0 }) => {
+    const fatTotal = parseInt(fat) * parseInt(fat_rate);
+    const productTotal = parseInt(qty_amount) * parseInt(qty);
+    const amount = fatTotal ? parseInt(fatTotal) + parseInt(productTotal) : parseInt(productTotal);
+    this.props.updateEditVendorProductEntryProps('amount', amount && amount.toString());
+  };
 
   onSubmit() {
     const rule = {
@@ -46,23 +71,8 @@ class AddVendorProductEntry extends Component {
       qty_amount: ['qty'],
     };
     this.props
-      .validate(this.props, rule, VENDOR_PRODUCT_ENTRY_ERROR)
-      .then(() => this.props.addVendorProductEntry(this.props));
-  }
-
-  calculateTotalAmount = ({ fat = 0, fat_rate = 0, qty_amount = 0, qty = 0 }) => {
-    const fatTotal = parseInt(fat) * parseInt(fat_rate);
-    const productTotal = parseInt(qty_amount) * parseInt(qty);
-    const amount = fatTotal ? parseInt(fatTotal) + parseInt(productTotal) : parseInt(productTotal);
-    this.props.updateVendorProductEntryProps('amount', amount && amount.toString());
-  };
-
-  resolveData(data) {
-    const obj = { 0: 'Select product' };
-    if (data && data.length > 0) {
-      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
-    }
-    return obj;
+      .validate(this.props, rule, EDIT_VENDOR_PRODUCT_ENTRY_ERROR)
+      .then(() => this.props.editVendorProductEntry(this.props));
   }
 
   render() {
@@ -76,28 +86,31 @@ class AddVendorProductEntry extends Component {
       product_id,
       amount,
       remark,
+      id,
       loading,
+      qty_amount,
       fat,
       fat_rate,
-      qty_amount,
     } = this.props;
     return (
       <View style={containerStyle}>
         <ScrollView>
           <InputSelect
             label="Product"
-            selectedValue={product_id}
+            selectedValue={product_id && product_id.toString()}
             data={this.resolveData(this.props.products)}
             error={'product_id' in error}
             errorText={'product_id' in error && error.product_id[0]}
-            onValueChange={value => this.props.updateVendorProductEntryProps('product_id', value)}
+            onValueChange={value =>
+              this.props.updateEditVendorProductEntryProps('product_id', value)
+            }
           />
           <InputText
             label="Quantity"
-            value={qty}
+            value={qty.toString()}
             error={'qty' in error}
             errorText={'qty' in error && error.qty[0]}
-            onChangeText={value => this.props.updateVendorProductEntryProps('qty', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('qty', value)}
             keyboardType="numeric"
           />
           <InputText
@@ -105,7 +118,7 @@ class AddVendorProductEntry extends Component {
             errorText={'qty_amount' in error && error.qty_amount[0]}
             label="Amount per quantity"
             value={qty_amount}
-            onChangeText={value => this.props.updateVendorProductEntryProps('qty_amount', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('qty_amount', value)}
             keyboardType="numeric"
           />
 
@@ -114,7 +127,7 @@ class AddVendorProductEntry extends Component {
             errorText={'fat' in error && error.fat[0]}
             label="Fat"
             value={fat}
-            onChangeText={value => this.props.updateVendorProductEntryProps('fat', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('fat', value)}
             keyboardType="numeric"
           />
 
@@ -123,7 +136,7 @@ class AddVendorProductEntry extends Component {
             errorText={'fat_rate' in error && error.fat_rate[0]}
             label="Fate Rate"
             value={fat_rate}
-            onChangeText={value => this.props.updateVendorProductEntryProps('fat_rate', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('fat_rate', value)}
             keyboardType="numeric"
           />
 
@@ -132,14 +145,14 @@ class AddVendorProductEntry extends Component {
             errorText={'remark' in error && error.remark[0]}
             label="Remark"
             value={remark}
-            onChangeText={value => this.props.updateVendorProductEntryProps('remark', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('remark', value)}
           />
           <InputText
             error={'amount' in error}
             errorText={'amount' in error && error.amount[0]}
             label="Amount"
             value={amount}
-            onChangeText={value => this.props.updateVendorProductEntryProps('amount', value)}
+            onChangeText={value => this.props.updateEditVendorProductEntryProps('amount', value)}
             keyboardType="numeric"
           />
           <InputError
@@ -148,11 +161,7 @@ class AddVendorProductEntry extends Component {
           />
         </ScrollView>
         <View>
-          <InputButton
-            title={amount ? `Add Purchase of (₹${amount})` : 'Add Purchase'}
-            onPress={() => this.onSubmit()}
-            loading={loading}
-          />
+          <InputButton title="Save Changes" onPress={() => this.onSubmit()} loading={loading} />
         </View>
         <SuccessModal visible={success} onPress={() => this.onSuccessPress()} text={message} />
       </View>
@@ -182,11 +191,11 @@ const mapStateToProps = state => {
     amount,
     remark,
     loading,
+    id,
+    qty_amount,
     fat,
     fat_rate,
-    qty_amount,
-  } = state.vendorProductEntry;
-  const { id } = state.listVendor.selectedVendor;
+  } = state.editVendorProductEntry;
   const { data: products } = state.fetchProduct;
 
   return {
@@ -202,13 +211,19 @@ const mapStateToProps = state => {
     id,
     loading,
     products,
+    qty_amount,
     fat,
     fat_rate,
-    qty_amount,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { addVendorProductEntry, updateVendorProductEntryProps, fetchFilterVendorsList, validate, fetchvendorsList }
-)(AddVendorProductEntry);
+  {
+    editVendorProductEntry,
+    updateEditVendorProductEntryProps,
+    deleteVendorProductEntry,
+    fetchFilterVendorsList,
+    validate,
+  }
+)(EditVendorProductEntry);

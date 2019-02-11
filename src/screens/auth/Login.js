@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, BackHandler } from 'react-native';
+import { ScrollView, View, Text, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { InputText, InputButton, InputError } from '../../component';
 import { updateLoginProp, attemptLogin } from '../../actions/loginActions';
-import { ScrollView } from 'react-native-gesture-handler';
 
 class Login extends Component {
   _didFocusSubscription;
@@ -27,14 +26,7 @@ class Login extends Component {
     return true;
   };
   render() {
-    const {
-      container,
-      heading,
-      inputContainer,
-      subHeading,
-      footerButtonStyle,
-      footerContainer,
-    } = styles;
+    const { container, heading, inputContainer, footerButtonStyle, footerContainer } = styles;
     const { email, password, error, loading, errorMessage } = this.props;
 
     return (
@@ -118,6 +110,10 @@ const styles = {
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: 10,
+  },
+  inputContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 

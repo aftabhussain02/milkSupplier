@@ -18,7 +18,7 @@ export const CustomPicker = ({
           width: '100%',
           padding: 0,
           height: 40,
-          color: 'gray',
+          color: 'black',
           fontSize: 20,
         },
         style,

@@ -8,7 +8,7 @@ import {
 const intState = {
   qty: '',
   product_id: '',
-  product_type_id: '',
+  unit_type: '',
   amount: '',
   remark: '',
   error: {},
@@ -16,7 +16,7 @@ const intState = {
   loading: false,
   errorMessage: '',
   message: '',
-  amount_qty: '',
+  qty_amount: '',
   fat: '',
   fat_rate: '',
 };

@@ -4,18 +4,17 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { InputText, InputSelect, InputButton, SuccessModal, InputError } from '../../component';
 import {
-  updateEditVendorProductEntryProps,
-  editVendorProductEntry,
-  deleteVendorProductEntry,
-  fetchFilterVendorsList,
+  updateEditProductEntryProps,
+  editProductEntry,
+  deleteProductEntry,
+  fetchFilterClientsList,
+  EDIT_PRODUCT_ENTRY_ERROR,
   validate,
-  EDIT_VENDOR_PRODUCT_ENTRY_ERROR,
 } from '../../actions';
 
-class EditVendorProductEntry extends Component {
+class EditProductEntry extends Component {
   state = {
     success: false,
-    openMore: false,
   };
 
   componentDidMount() {
@@ -26,37 +25,35 @@ class EditVendorProductEntry extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.product_id !== this.props.product_id) {
-      this.resolveProductType();
+      this.resolveUnits();
     }
   }
 
   delete() {
     const { id } = this.props;
-    this.props.deleteVendorProductEntry(id);
+    this.props.deleteProductEntry(id);
   }
 
   resolveData(data) {
     const obj = { 0: 'Select product' };
     if (data && data.length > 0) {
-      _.map(data, v => Object.assign(obj, { [v.id]: v.name }));
+      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
     }
     return obj;
   }
 
-  resolveProductType() {
-    const obj = { 0: 'Select product type' };
+  resolveUnits() {
+    const obj = { 0: 'Select product unit' };
     const { products, product_id } = this.props;
     if (product_id && product_id != '0') {
-      _.map(_.find(products, v => v.id == product_id).type, v =>
-        Object.assign(obj, { [v.id]: v.name })
-      );
+      _.map(_.find(products, v => v.id == product_id).units, v => Object.assign(obj, { [v]: v }));
     }
     return obj;
   }
 
   onSuccessPress() {
-    this.props.updateEditVendorProductEntryProps('success', false);
-    this.props.fetchFilterVendorsList();
+    this.props.updateEditProductEntryProps('success', false);
+    this.props.fetchFilterClientsList();
     this.props.navigation.goBack();
   }
 
@@ -64,11 +61,12 @@ class EditVendorProductEntry extends Component {
     const rule = {
       qty: ['required', 'qty'],
       product_id: 'required',
+      unit_type: 'reqruired',
       amount: ['required', 'amount'],
     };
     this.props
-      .validate(this.props, rule, EDIT_VENDOR_PRODUCT_ENTRY_ERROR)
-      .then(() => this.props.editVendorProductEntry(this.props));
+      .validate(this.props, rule, EDIT_PRODUCT_ENTRY_ERROR)
+      .then(() => this.props.editProductEntry(this.props));
   }
 
   render() {
@@ -80,7 +78,7 @@ class EditVendorProductEntry extends Component {
       errorMessage,
       message,
       product_id,
-      product_type_id,
+      unit_type,
       amount,
       remark,
       id,
@@ -95,26 +93,22 @@ class EditVendorProductEntry extends Component {
             data={this.resolveData(this.props.products)}
             error={'product_id' in error}
             errorText={'product_id' in error && error.product_id[0]}
-            onValueChange={value =>
-              this.props.updateEditVendorProductEntryProps('product_id', value)
-            }
+            onValueChange={value => this.props.updateEditProductEntryProps('product_id', value)}
           />
           <InputSelect
             label="Product Type"
-            selectedValue={product_type_id && product_type_id.toString()}
-            data={this.resolveProductType()}
-            error={'product_type_id' in error}
-            errorText={'product_type_id' in error && error.product_type_id[0]}
-            onValueChange={value =>
-              this.props.updateEditVendorProductEntryProps('product_type_id', value)
-            }
+            selectedValue={unit_type && unit_type.toString()}
+            data={this.resolveUnits()}
+            error={'unit_type' in error}
+            errorText={'unit_type' in error && error.unit_type[0]}
+            onValueChange={value => this.props.updateEditProductEntryProps('unit_type', value)}
           />
           <InputText
-            label="Qty"
-            value={qty}
+            label="Quantity"
+            value={qty.toString()}
             error={'qty' in error}
             errorText={'qty' in error && error.qty[0]}
-            onChangeText={value => this.props.updateEditVendorProductEntryProps('qty', value)}
+            onChangeText={value => this.props.updateEditProductEntryProps('qty', value)}
             keyboardType="numeric"
           />
           <InputText
@@ -122,7 +116,7 @@ class EditVendorProductEntry extends Component {
             errorText={'amount' in error && error.amount[0]}
             label="Amount"
             value={amount}
-            onChangeText={value => this.props.updateEditVendorProductEntryProps('amount', value)}
+            onChangeText={value => this.props.updateEditProductEntryProps('amount', value)}
             keyboardType="numeric"
           />
           <InputText
@@ -130,7 +124,7 @@ class EditVendorProductEntry extends Component {
             errorText={'remark' in error && error.remark[0]}
             label="Remark"
             value={remark}
-            onChangeText={value => this.props.updateEditVendorProductEntryProps('remark', value)}
+            onChangeText={value => this.props.updateEditProductEntryProps('remark', value)}
           />
           <InputError
             visible={Object.keys(error) < 1 && errorMessage}
@@ -164,12 +158,12 @@ const mapStateToProps = state => {
     errorMessage,
     message,
     product_id,
-    product_type_id,
+    unit_type,
     amount,
     remark,
     loading,
     id,
-  } = state.editVendorProductEntry;
+  } = state.editProductEntry;
   const { data: products } = state.fetchProduct;
 
   return {
@@ -179,7 +173,7 @@ const mapStateToProps = state => {
     errorMessage,
     message,
     product_id,
-    product_type_id,
+    unit_type,
     amount,
     remark,
     id,
@@ -191,10 +185,10 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    editVendorProductEntry,
-    updateEditVendorProductEntryProps,
-    deleteVendorProductEntry,
-    fetchFilterVendorsList,
+    editProductEntry,
+    updateEditProductEntryProps,
+    deleteProductEntry,
+    fetchFilterClientsList,
     validate,
   }
-)(EditVendorProductEntry);
+)(EditProductEntry);

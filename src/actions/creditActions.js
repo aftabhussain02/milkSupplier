@@ -12,7 +12,7 @@ export const updateAddCreditProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const addCredit = ({ credit_user_id, amount }) => dispatch =>
+export const addCredit = ({ id: credit_user_id, amount }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: ADD_CREDIT_ATTEMPT,
@@ -27,6 +27,7 @@ export const addCredit = ({ credit_user_id, amount }) => dispatch =>
       { headers }
     )
       .then(({ data }) => {
+        console.log(data);
         dispatch({
           type: ADD_CREDIT_SUCCESS,
           payload: data,

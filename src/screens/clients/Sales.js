@@ -8,12 +8,8 @@ import { initializeEditProductEntry } from '../../actions';
 class Sales extends Component {
   onPress(data) {
     this.props.initializeEditProductEntry({
-      id: data.id,
+      ...data,
       product_id: data.product.id,
-      amount: data.amount,
-      qty: data.qty.toString(),
-      remark: data.remark,
-      product_type_id: data.product_type && data.product_type.id,
     });
 
     this.props.navigation.navigate('editSales');
@@ -27,7 +23,7 @@ class Sales extends Component {
           <ProductList>
             <ProductListItem
               title={user.name}
-              product={product.name}
+              product={product.full_name}
               amount={amount}
               onPress={() => this.onPress(v)}
             />
@@ -77,19 +73,21 @@ const styles = {
     flexDirection: 'row',
   },
   titleStyle: {
-    width: '60%',
+    width: '40%',
     fontWeight: 'bold',
     fontSize: 12,
   },
   amountStyle: {
-    width: '20%',
+    width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
+    textAlign: 'center'
   },
   productStyle: {
-    width: '20%',
+    width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
+    textAlign: 'center'
   },
 };
 

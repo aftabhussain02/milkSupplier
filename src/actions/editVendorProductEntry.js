@@ -20,11 +20,14 @@ export const updateEditVendorProductEntryProps = (prop, value) => ({
 
 export const editVendorProductEntry = ({
   product_id,
-  product_type_id,
+  unit_type,
   amount,
   qty,
   id,
   alter_phone,
+  qty_amount,
+  fat,
+  fat_rate,
 }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
@@ -34,10 +37,13 @@ export const editVendorProductEntry = ({
       `${vendorProductEntryApi}/${id}`,
       {
         product_id,
-        product_type_id,
+        unit_type,
         amount,
         qty,
         alter_phone,
+        qty_amount,
+        fat,
+        fat_rate,
         _method: 'put',
       },
       { headers }

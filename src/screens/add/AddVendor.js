@@ -27,7 +27,7 @@ class AddVendorProfile extends Component {
   resolveData(data) {
     const obj = { 0: 'Select product' };
     if (data && data.length > 0) {
-      _.map(data, v => Object.assign(obj, { [v.id]: v.name }));
+      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
     }
     return obj;
   }
@@ -37,7 +37,7 @@ class AddVendorProfile extends Component {
     const { products, product_id } = this.props;
     if (product_id && product_id != '0') {
       _.map(_.find(products, v => v.id == product_id).type, v =>
-        Object.assign(obj, { [v.id]: v.name })
+        Object.assign(obj, { [v.id]: v.full_name })
       );
     }
     return obj;
@@ -67,7 +67,7 @@ class AddVendorProfile extends Component {
       email,
       phone,
       product_id,
-      product_type_id,
+      unit_type,
       alter_phone,
     } = this.props;
     return (
@@ -147,7 +147,7 @@ const mapStateToProps = state => {
     phone,
     area,
     product_id,
-    product_type_id,
+    unit_type,
     id,
     alter_phone,
   } = state.addVendor;
@@ -163,7 +163,7 @@ const mapStateToProps = state => {
     phone,
     area,
     product_id,
-    product_type_id,
+    unit_type,
     id,
     products,
     alter_phone,

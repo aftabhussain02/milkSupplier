@@ -17,7 +17,6 @@ export const addVendor = ({
   email,
   phone,
   product_id,
-  product_type_id,
   alter_phone,
 }) => dispatch =>
   getStorageParams().then(({ headers }) => {
@@ -27,7 +26,7 @@ export const addVendor = ({
 
     return Axios.post(
       `${vendorApi}`,
-      { name, email, phone, product_id, product_type_id, alter_phone },
+      { name, email, phone, product_id, alter_phone },
       { headers }
     )
       .then(({ data }) => {

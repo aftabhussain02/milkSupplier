@@ -18,7 +18,7 @@ export const updateEditProductEntryProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const editProductEntry = ({ product_id, product_type_id, amount, qty, id }) => dispatch =>
+export const editProductEntry = ({ product_id, unit_type, amount, qty, id }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: EDIT_PRODUCT_ENTRY_ATTEMPT,
@@ -27,7 +27,7 @@ export const editProductEntry = ({ product_id, product_type_id, amount, qty, id 
       `${productEntryApi}/${id}`,
       {
         product_id,
-        product_type_id,
+        unit_type,
         amount,
         qty,
         _method: 'put',

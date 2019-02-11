@@ -5,6 +5,7 @@ import FloatingLabel from 'react-native-floating-labels';
 import { Icon } from 'react-native-elements';
 import { InputError } from './InputError';
 import { ACCENT_COLOR } from '../constant';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 export class InputText extends Component {
   state = {
@@ -99,7 +100,7 @@ const styles = {
     borderBottomWidth: 1,
   },
   textInputContainer: {
-    width: 300,
+    width: widthPercentageToDP('90%'),
   },
   autoCompleteContainer: {
     borderWidth: 1,

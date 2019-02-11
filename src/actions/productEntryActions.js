@@ -14,7 +14,7 @@ export const updateProductEntryProps = (prop, value) => ({
 
 export const addProductEntry = ({
   product_id,
-  product_type_id,
+  unit_type,
   amount,
   id: user_id,
   qty,
@@ -29,7 +29,7 @@ export const addProductEntry = ({
       productEntryApi,
       {
         product_id,
-        product_type_id,
+        unit_type,
         amount,
         user_id,
         qty,

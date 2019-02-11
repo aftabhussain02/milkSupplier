@@ -23,7 +23,7 @@ export const editVendor = ({
   email,
   phone,
   product_id,
-  product_type_id,
+  unit_type,
   id,
   alter_phone,
 }) => dispatch =>
@@ -39,7 +39,7 @@ export const editVendor = ({
         email,
         phone,
         product_id,
-        product_type_id,
+        unit_type,
         alter_phone,
         _method: 'put',
       },

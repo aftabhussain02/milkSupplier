@@ -4,17 +4,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { ProductList, ProductListItem } from '../../component';
 import { initializeEditVendorProductEntry } from '../../actions';
-import { ACCENT_COLOR } from '../../constant';
 
 class Purchases extends Component {
   onPress(data) {
     this.props.initializeEditVendorProductEntry({
-      id: data.id,
+      ...data, 
       product_id: data.product.id,
-      amount: data.amount,
-      qty: data.qty.toString(),
-      remark: data.remark,
-      product_type_id: data.product_type && data.product_type.id,
     });
 
     this.props.navigation.navigate('editPurchases');
@@ -22,19 +17,20 @@ class Purchases extends Component {
 
   resolveList() {
     if (this.props.data && this.props.data.length > 0) {
-      return _.map(this.props.data, v => {
+      return <ProductList>
+        {_.map(this.props.data, v => {
         const { user, product, amount } = v;
         return (
-          <ProductList>
             <ProductListItem
               title={user.name}
-              product={product.name}
+              product={product.full_name}
               amount={amount}
               onPress={() => this.onPress(v)}
             />
-          </ProductList>
         );
-      });
+      })}
+          </ProductList>
+
     }
     return <Text style={{ textAlign: 'center', marginTop: 20 }}>Empty Purchases.</Text>;
   }
@@ -80,19 +76,21 @@ const styles = {
     flexDirection: 'row',
   },
   titleStyle: {
-    width: '60%',
+    width: '40%',
     fontWeight: 'bold',
     fontSize: 12,
   },
   amountStyle: {
-    width: '20%',
+    width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
+    textAlign: 'center'
   },
   productStyle: {
-    width: '20%',
+    width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
+    textAlign: 'center'
   },
 };
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Keyboard } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ACCENT_COLOR } from '../constant';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export const InputButton = ({ title, onPress, loading, containerViewStyle }) => (
   <Button
@@ -21,7 +22,7 @@ export const InputButton = ({ title, onPress, loading, containerViewStyle }) => 
 
 const styles = {
   buttonContainerStyle: {
-    width: 'auto',
+    width: wp('90%'),
     alignSelf: 'center',
   },
 };

@@ -15,7 +15,7 @@ class AddCredit extends Component {
   }
   render() {
     const { containerStyle } = styles;
-    const { amount, id, success, error, errorMessage, message, loading } = this.props;
+    const { amount, success, error, errorMessage, message, loading } = this.props;
     return (
       <View style={containerStyle}>
         <ScrollView>
@@ -25,6 +25,7 @@ class AddCredit extends Component {
             error={'amount' in error}
             errorText={'amount' in error && error.amount[0]}
             onChangeText={value => this.props.updateAddCreditProps('amount', value)}
+            keyboardType="numeric"
           />
           <InputError
             visible={Object.keys(error) < 1 && errorMessage}
@@ -38,6 +39,7 @@ class AddCredit extends Component {
           visible={success}
           onPress={() => {
             this.props.updateAddCreditProps('success', false);
+            this.props.navigation.goBack();
           }}
           text={message}
         />

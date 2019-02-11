@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { SectionListItem, CustomModel, ActionSheetButton } from '../../component';
@@ -44,6 +44,8 @@ class ListClients extends Component {
             onPress={() => this.routeInit(item, 'addCredit')}
             title="Add Receive Money"
           />
+          <ActionSheetButton onPress={() => this.routeInit(item, 'clientNotes')} title="Notes" />
+          <ActionSheetButton onPress={() => this.routeInit(item, 'sales')} title="All Sales" />
         </View>
       </CustomModel>
     );
@@ -75,12 +77,13 @@ class ListClients extends Component {
       ));
     }
   }
+
   render() {
     return (
-      <View>
-        {this.resolveList()}
+      <ScrollView>
+        <View style={{ marginBottom: 20 }}>{this.resolveList()}</View>
         {this.actionSheet()}
-      </View>
+      </ScrollView>
     );
   }
 }

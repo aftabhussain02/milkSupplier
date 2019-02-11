@@ -26,7 +26,8 @@ const styles = {
     alignSelf: 'center',
     justifyContent: 'flex-start',
     borderColor: ACCENT_COLOR,
-    borderWidth: 1,
+    // borderWidth: 1,
+    elevation: 2,
   },
   chevronStyle: {
     alignSelf: 'flex-end',

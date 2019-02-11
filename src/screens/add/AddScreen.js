@@ -12,21 +12,6 @@ class AddScreen extends Component {
           title="Add Product"
           onPress={() => this.props.navigation.navigate('addProduct')}
         />
-        <InputButton
-          containerViewStyle={{ width: '90%', marginTop: 20 }}
-          title="Add Product Type"
-          onPress={() => this.props.navigation.navigate('addProductType')}
-        />
-        <InputButton
-          containerViewStyle={{ width: '90%', marginTop: 20 }}
-          title="Add Client"
-          onPress={() => this.props.navigation.navigate('addClient')}
-        />
-        <InputButton
-          containerViewStyle={{ width: '90%', marginTop: 20 }}
-          title="Add Vendor"
-          onPress={() => this.props.navigation.navigate('addVendor')}
-        />
       </View>
     );
   }

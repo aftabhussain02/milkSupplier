@@ -18,3 +18,4 @@ export const vendorProductEntryApi = `${fullUrl}vendor_product_entry`;
 export const debitApi = `${fullUrl}debit`;
 export const creditApi = `${fullUrl}credit`;
 export const changePasswordApi = `${fullUrl}change_password`;
+export const noteApi = `${fullUrl}note`;

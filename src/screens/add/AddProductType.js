@@ -31,7 +31,7 @@ class AddProductType extends Component {
   resolveData(data) {
     const obj = { 0: 'Select product' };
     if (data && data.length > 0) {
-      _.map(data, v => Object.assign(obj, { [v.id]: v.name }));
+      _.map(data, v => Object.assign(obj, { [v.id]: v.full_name }));
     }
     return obj;
   }

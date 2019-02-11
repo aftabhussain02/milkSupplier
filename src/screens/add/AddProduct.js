@@ -21,7 +21,6 @@ class AddProduct extends Component {
   onSubmit() {
     const rule = {
       name: ['required', 'letters'],
-      type: ['letters'],
       units: ['checkbox', 'required'],
     };
     this.props

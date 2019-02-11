@@ -12,7 +12,7 @@ export const updateAddDebitProps = (prop, value) => ({
   payload: { prop, value },
 });
 
-export const addDebit = ({ debit_user_id, amount }) => dispatch =>
+export const addDebit = ({ id: debit_user_id, amount }) => dispatch =>
   getStorageParams().then(({ headers }) => {
     dispatch({
       type: ADD_DEBIT_ATTEMPT,

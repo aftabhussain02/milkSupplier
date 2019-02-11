@@ -38,7 +38,7 @@ const styles = {
     width: '90%',
     alignSelf: 'center',
     borderColor: ACCENT_COLOR,
-    borderWidth: 1,
+    borderWidth: 0,
     marginTop: 10,
     marginRight: 10,
     borderRadius: 10,

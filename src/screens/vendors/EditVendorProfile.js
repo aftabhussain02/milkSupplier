@@ -50,7 +50,7 @@ class EditVendorProfile extends Component {
       email,
       phone,
       product_id,
-      product_type_id,
+      unit_type,
       alter_phone,
     } = this.props;
     return (
@@ -130,7 +130,7 @@ const mapStateToProps = state => {
     phone,
     area,
     product_id,
-    product_type_id,
+    unit_type,
     id,
     alter_phone,
   } = state.editVendor;
@@ -147,7 +147,7 @@ const mapStateToProps = state => {
     phone,
     area,
     product_id,
-    product_type_id,
+    unit_type,
     id,
     products,
     alter_phone,

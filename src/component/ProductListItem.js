@@ -11,7 +11,7 @@ export const ProductListItem = ({ title, onPress, amount, product }) => {
         <View style={textContainer}>
           <Text style={titleStyle}>{title}</Text>
           <Text style={productStyle}>{product}</Text>
-          <Text style={amountStyle}>₹{amount}</Text>
+          <Text style={amountStyle}>${amount}</Text>
         </View>
       </View>
     </TouchableNativeFeedback>
@@ -28,8 +28,9 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: ACCENT_COLOR,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 10,
+    elevation: 2,
   },
   iconContainer: {
     alignSelf: 'flex-end',
@@ -42,15 +43,17 @@ const styles = {
     flexDirection: 'row',
   },
   titleStyle: {
-    width: '60%',
+    width: '40%',
     fontWeight: 'bold',
     fontSize: 16,
     color: 'gray',
   },
   amountStyle: {
-    width: '20%',
+    width: '30%',
+    textAlign: 'center',
   },
   productStyle: {
-    width: '20%',
+    width: '30%',
+    textAlign: 'center',
   },
 };

@@ -26,7 +26,7 @@ class ViewVendorProfile extends Component {
           <ProfileViewItem
             heading={`Last Entry (${moment(last.entry_date).format('DD-MM-YYYY')})`}
           />
-          <ProfileViewItem title={_.upperFirst(last.product.name)} value={`$${last.amount}`} />
+          <ProfileViewItem title={_.upperFirst(last.product.name)} value={`₹${last.amount}`} />
         </View>
       );
     }
@@ -53,7 +53,7 @@ class ViewVendorProfile extends Component {
         </ProfileView>
         <View style={footerContainer}>
           <Text style={[footerTextStyle, { fontWeight: 'bold' }]}>Amount</Text>
-          <Text style={footerTextStyle}>-$2000</Text>
+          <Text style={footerTextStyle}>-₹2000</Text>
         </View>
       </View>
     );
