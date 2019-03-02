@@ -1,5 +1,5 @@
-// export const baseUrl = 'http://voiceofdon.com/';
-export const baseUrl = 'http://192.168.43.62:8000/';
+export const baseUrl = 'http://adurastar.com/';
+//  export const baseUrl = 'http://192.168.43.62:8000/';
 
 export const prefix = 'api/';
 
@@ -19,3 +19,6 @@ export const debitApi = `${fullUrl}debit`;
 export const creditApi = `${fullUrl}credit`;
 export const changePasswordApi = `${fullUrl}change_password`;
 export const noteApi = `${fullUrl}note`;
+export const generateBillApi = `${fullUrl}billing/`;
+export const invoiceApi = `${fullUrl}invoice/`;
+export const dashboardApi = `${fullUrl}dashboard`;

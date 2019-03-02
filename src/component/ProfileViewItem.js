@@ -47,6 +47,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     borderLeftWidth: 1,
+    borderTopWidth: 1,
     borderBottomWidth: 1,
     borderRightWidth: 1,
     borderColor: '#DCE1E5',

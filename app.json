@@ -1,13 +1,16 @@
 {
   "expo": {
-    "name": "milkSuppliers",
-    "slug": "milkSuppliers",
+    "name": "J2D2",
+    "slug": "J2D2",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
       "android"
     ],
+    "android": {
+      "package": "com.j2d2.j2d2"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

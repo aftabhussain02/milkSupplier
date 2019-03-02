@@ -31,12 +31,20 @@ import EditSales from '../screens/clients/EditSales';
 import Purchases from '../screens/vendors/Purchases';
 import EditPurchase from '../screens/vendors/EditPurchase';
 import ChangePassword from '../screens/setting/ChangePassword';
+import Transaction from '../screens/setting/Transaction';
 import ClientNotes from '../screens/clients/ClientNotes';
 import AddClientNote from '../screens/clients/AddClientNote';
 import ViewClientNote from '../screens/clients/ViewClientNote';
 import VendorNotes from '../screens/vendors/VendorNotes';
 import AddVendorNote from '../screens/vendors/AddVendorNote';
 import ViewVendorNote from '../screens/vendors/ViewVendorNote';
+import EditDebit from '../screens/setting/EditDebit';
+import EditCredit from '../screens/setting/EditCredit';
+import ClientCredits from '../screens/clients/ClientCredits';
+import EditClientCredit from '../screens/clients/EditClientCredit';
+import VendorDebits from '../screens/vendors/VendorDebits';
+import EditVendorDebit from '../screens/vendors/EditVendorDebit';
+import Notes from '../screens/setting/Notes';
 
 const Auth = createStackNavigator({
   login: {
@@ -72,14 +80,7 @@ const ClientsStack = createStackNavigator({
   addProductEntry: {
     screen: AddProductEntry,
     navigationOptions: ({ navigation }) => ({
-      header: (
-        <BackHeader
-          title="Add Sales entry"
-          rightIconName="more-vert"
-          navigation={navigation}
-          onRightIconPress={() => navigation.state.params.manageMore()}
-        />
-      ),
+      header: <BackHeader title="Add Sales entry" navigation={navigation} disableRightIcon />,
     }),
   },
   clientProfile: {
@@ -137,6 +138,44 @@ const ClientsStack = createStackNavigator({
       header: <BackHeader title="Note" navigation={navigation} disableRightIcon />,
     }),
   },
+  sales: {
+    screen: Sales,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Sales Entries" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editSales: {
+    screen: EditSales,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Entry"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
+  clientCredits: {
+    screen: ClientCredits,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Transactions" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editClientCredits: {
+    screen: EditClientCredit,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Transactions"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
 });
 
 const AddStack = createStackNavigator({
@@ -173,9 +212,9 @@ const VendorStack = createStackNavigator({
       header: (
         <BackHeader
           title="Add Purchase Entry"
-          rightIconName="more-vert"
           navigation={navigation}
-          onRightIconPress={() => navigation.state.params.manageMore()}
+          rightIconName="more-vert"
+          disableRightIcon
         />
       ),
     }),
@@ -208,25 +247,6 @@ const VendorStack = createStackNavigator({
     screen: AddVendor,
     navigationOptions: ({ navigation }) => ({
       header: <BackHeader title="Add Vendor" navigation={navigation} disableRightIcon />,
-    }),
-  },
-  sales: {
-    screen: Sales,
-    navigationOptions: ({ navigation }) => ({
-      header: <BackHeader title="Sales Entries" navigation={navigation} disableRightIcon />,
-    }),
-  },
-  editSales: {
-    screen: EditSales,
-    navigationOptions: ({ navigation }) => ({
-      header: (
-        <BackHeader
-          title="Edit Entry"
-          navigation={navigation}
-          rightIconName="remove"
-          onRightIconPress={() => navigation.state.params.delete()}
-        />
-      ),
     }),
   },
   purchases: {
@@ -273,6 +293,25 @@ const VendorStack = createStackNavigator({
       header: <BackHeader title="Note" navigation={navigation} disableRightIcon />,
     }),
   },
+  vendorDebits: {
+    screen: VendorDebits,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Transactions" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editVendorDebits: {
+    screen: EditVendorDebit,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Transactions"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
 });
 
 const SettingStack = createStackNavigator({
@@ -293,6 +332,44 @@ const SettingStack = createStackNavigator({
     screen: ChangePassword,
     navigationOptions: ({ navigation }) => ({
       header: <BackHeader title="Change Password" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  transaction: {
+    screen: Transaction,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Transactions" navigation={navigation} disableRightIcon />,
+    }),
+  },
+  editDebit: {
+    screen: EditDebit,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Transaction"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
+  editCredit: {
+    screen: EditCredit,
+    navigationOptions: ({ navigation }) => ({
+      header: (
+        <BackHeader
+          title="Edit Transaction"
+          navigation={navigation}
+          rightIconName="remove"
+          onRightIconPress={() => navigation.state.params.delete()}
+        />
+      ),
+    }),
+  },
+  notes: {
+    screen: Notes,
+    navigationOptions: ({ navigation }) => ({
+      header: <BackHeader title="Notes" navigation={navigation} disableRightIcon />,
     }),
   },
 });

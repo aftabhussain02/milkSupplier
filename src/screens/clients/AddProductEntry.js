@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, TouchableWithoutFeedback } from 'react-native';
+import { ScrollView, View, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
@@ -18,6 +18,7 @@ import {
   validate,
   PRODUCT_ENTRY_ERROR,
   fetchCustomersList,
+  fetchDashboard,
 } from '../../actions';
 
 class AddProductEntry extends Component {
@@ -33,6 +34,7 @@ class AddProductEntry extends Component {
   }
 
   onSuccessPress() {
+    this.props.fetchDashboard();
     this.props.fetchCustomersList();
     this.props.fetchFilterClientsList();
     this.props.updateProductEntryProps('success', false);
@@ -80,59 +82,60 @@ class AddProductEntry extends Component {
       unit_type,
       amount,
       remark,
-      id,
       loading,
     } = this.props;
     return (
       <View style={containerStyle}>
-        <ScrollView>
-          <InputSelect
-            label="Product"
-            selectedValue={product_id}
-            data={this.resolveData(this.props.products)}
-            error={'product_id' in error}
-            errorText={'product_id' in error && error.product_id[0]}
-            onValueChange={value => this.props.updateProductEntryProps('product_id', value)}
-          />
-          <InputSelect
-            label="Product Unit"
-            selectedValue={unit_type}
-            data={this.resolveUnits()}
-            error={'unit_type' in error}
-            errorText={'unit_type' in error && error.unit_type[0]}
-            onValueChange={value => this.props.updateProductEntryProps('unit_type', value)}
-          />
-          <InputText
-            label="Qty"
-            value={qty}
-            error={'qty' in error}
-            errorText={'qty' in error && error.qty[0]}
-            onChangeText={value => this.props.updateProductEntryProps('qty', value)}
-            keyboardType="numeric"
-          />
-          <InputText
-            error={'amount' in error}
-            errorText={'amount' in error && error.amount[0]}
-            label="Amount"
-            value={amount}
-            onChangeText={value => this.props.updateProductEntryProps('amount', value)}
-            keyboardType="numeric"
-          />
-          <InputText
-            error={'remark' in error}
-            errorText={'remark' in error && error.remark[0]}
-            label="Remark"
-            value={remark}
-            multiline
-            numberOfLines={10}
-            onChangeText={value => this.props.updateProductEntryProps('remark', value)}
-          />
-          <InputError
-            visible={Object.keys(error) < 1 && errorMessage}
-            errorText={errorMessage && errorMessage}
-          />
-        </ScrollView>
-        <View>
+        <KeyboardAvoidingView enabled behavior="padding" keyboardVerticalOffset={80}>
+          <ScrollView>
+            <InputSelect
+              label="Product"
+              selectedValue={product_id}
+              data={this.resolveData(this.props.products)}
+              error={'product_id' in error}
+              errorText={'product_id' in error && error.product_id[0]}
+              onValueChange={value => this.props.updateProductEntryProps('product_id', value)}
+            />
+            <InputSelect
+              label="Product Unit"
+              selectedValue={unit_type}
+              data={this.resolveUnits()}
+              error={'unit_type' in error}
+              errorText={'unit_type' in error && error.unit_type[0]}
+              onValueChange={value => this.props.updateProductEntryProps('unit_type', value)}
+            />
+            <InputText
+              label="Qty"
+              value={qty}
+              error={'qty' in error}
+              errorText={'qty' in error && error.qty[0]}
+              onChangeText={value => this.props.updateProductEntryProps('qty', value)}
+              keyboardType="numeric"
+            />
+            <InputText
+              error={'amount' in error}
+              errorText={'amount' in error && error.amount[0]}
+              label="Amount"
+              value={amount}
+              onChangeText={value => this.props.updateProductEntryProps('amount', value)}
+              keyboardType="numeric"
+            />
+            <InputText
+              error={'remark' in error}
+              errorText={'remark' in error && error.remark[0]}
+              label="Remark"
+              value={remark}
+              multiline
+              numberOfLines={10}
+              onChangeText={value => this.props.updateProductEntryProps('remark', value)}
+            />
+            <InputError
+              visible={Object.keys(error) < 1 && errorMessage}
+              errorText={errorMessage && errorMessage}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
+        <View style={{ paddingBottom: 30 }}>
           <InputButton
             title={amount ? `Add Sales of (₹${amount})` : 'Add Sales'}
             onPress={() => this.onSubmit()}
@@ -148,7 +151,7 @@ class AddProductEntry extends Component {
 const styles = {
   containerStyle: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 40,
     paddingBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -189,5 +192,13 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addProductEntry, updateProductEntryProps, fetchProductsList, fetchFilterClientsList, validate, fetchCustomersList }
+  {
+    addProductEntry,
+    updateProductEntryProps,
+    fetchProductsList,
+    fetchFilterClientsList,
+    validate,
+    fetchCustomersList,
+    fetchDashboard,
+  }
 )(AddProductEntry);

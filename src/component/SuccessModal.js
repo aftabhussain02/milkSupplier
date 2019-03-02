@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Modal, Text } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
-// import { ButtonComponent } from './ButtonComponent';
+import { SUCCESS_COLOR } from '../constant';
 
 export const SuccessModal = ({ onPress, text, visible }) => {
   const { container, modalContainer, modalTextContainer, modalTextStyle, iconContainer } = styles;
 
   return (
           <Modal
-             animationType="slide"
+             animationType="fade"
              transparent
              visible={visible}
              onRequestClose={() => {}}
@@ -23,11 +23,11 @@ export const SuccessModal = ({ onPress, text, visible }) => {
                     containerStyle={iconContainer}
                   />
                 <View style={modalTextContainer}>
-                <Text style={{ fontSize: 16 }}>Success!</Text>
-                <Text style={modalTextStyle}>{text}</Text>
+                  <Text style={{ fontSize: 16 }}>Success!</Text>
+                  <Text style={modalTextStyle}>{text}</Text>
                 <Button
                   onPress={() => onPress()}
-                  backgroundColor='#00AF67'
+                  backgroundColor={SUCCESS_COLOR}
                   containerViewStyle={{ width: '90%' }}
                   title='Okay'
                   borderRadius={3}
@@ -84,6 +84,6 @@ const styles = {
     marginBottom: 30,
     top: 0,
     alignSelf: 'center',
-    backgroundColor: '#00AF67'
+    backgroundColor: SUCCESS_COLOR
   }
 };

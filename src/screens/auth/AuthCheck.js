@@ -8,7 +8,11 @@ import {
   fetchvendorsList,
   fetchFilterClientsList,
   fetchFilterVendorsList,
+  fetchDashboard,
+  fetchDebit,
+  fetchCredit,
 } from '../../actions';
+import { fetchNotesList } from '../../actions/notesActions';
 
 class AuthCheck extends Component {
   async componentDidMount() {
@@ -17,11 +21,15 @@ class AuthCheck extends Component {
         .then(u => {
           if (u.token) {
             try {
+              this.props.fetchDashboard();
               this.props.fetchFilterClientsList();
               this.props.fetchFilterVendorsList();
               this.props.fetchProductsList();
               this.props.fetchCustomersList();
               this.props.fetchvendorsList();
+              this.props.fetchDebit();
+              this.props.fetchCredit();
+              this.props.fetchNotesList();
             } finally {
               this.props.navigation.navigate('App');
             }
@@ -53,5 +61,9 @@ export default connect(
     fetchvendorsList,
     fetchFilterClientsList,
     fetchFilterVendorsList,
+    fetchDashboard,
+    fetchDebit,
+    fetchCredit,
+    fetchNotesList,
   }
 )(AuthCheck);

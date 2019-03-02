@@ -18,7 +18,7 @@ class AddClientNote extends Component {
 
   onSuccessPress() {
     this.props.fetchCustomersList();
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('listClient');
     this.updateProductProps('success', false);
   }
 

@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { SectionListItem, CustomModel, ActionSheetButton } from '../../component';
-import { initializeEditVendor, fetchvendorsList, selectedVendor } from '../../actions';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { SearchBar } from 'react-native-elements';
+import { invoiceApi, ACCENT_COLOR } from '../../constant';
+import {
+  SectionListItem,
+  CustomModel,
+  ActionSheetButton,
+  ErrorModal,
+  LoadingIndicator,
+} from '../../component';
+import {
+  initializeEditVendor,
+  fetchvendorsList,
+  selectedVendor,
+  generatePdf,
+  searchVendor,
+} from '../../actions';
 
 class ListVendors extends Component {
   state = {
@@ -11,6 +26,8 @@ class ListVendors extends Component {
     phone: '',
     alter_phone: '',
     item: {},
+    error: '',
+    loading: false,
   };
 
   resolveActionSheet = item => {
@@ -19,6 +36,30 @@ class ListVendors extends Component {
       item,
     });
   };
+
+  generateBill(id) {
+    this.setState({
+      loading: true,
+      actionSheetVisible: false,
+    });
+    this.props
+      .generatePdf(id)
+      .then(s => {
+        console.log(s);
+        this.setState({
+          loading: false,
+        });
+        this.props.fetchvendorsList();
+        Linking.openURL(invoiceApi + s.uid);
+      })
+      .catch(e => {
+        console.log(e);
+        this.setState({
+          error: e.message,
+          loading: false,
+        });
+      });
+  }
 
   actionSheet() {
     const { item } = this.state;
@@ -31,7 +72,7 @@ class ListVendors extends Component {
           })
         }
       >
-        <View style={{ width: '90%' }}>
+        <View style={{ width: widthPercentageToDP('80%') }}>
           <ActionSheetButton
             onPress={() => this.routeInit(item, 'addVendorProductEntry')}
             title="Add Purchase"
@@ -44,11 +85,16 @@ class ListVendors extends Component {
             onPress={() => this.routeInit(item, 'addDebit')}
             title="Add Send Money"
           />
+          <ActionSheetButton
+            onPress={() => this.routeInit(item, 'vendorDebits')}
+            title="View Transactions"
+          />
           <ActionSheetButton onPress={() => this.routeInit(item, 'vendorNotes')} title="Notes" />
           <ActionSheetButton
             onPress={() => this.routeInit(item, 'purchases')}
             title="All Purchases"
           />
+          <ActionSheetButton onPress={() => this.generateBill(item.id)} title="Generate Bill" />
         </View>
       </CustomModel>
     );
@@ -64,9 +110,9 @@ class ListVendors extends Component {
   }
 
   resolveList() {
-    const { data } = this.props;
+    const { searchVendors: data } = this.props;
     if (data && Object.keys(data).length > 0) {
-      return _.map(this.props.data, (item, index) => (
+      return _.map(data, (item, index) => (
         <SectionListItem
           key={index}
           amountInMinus
@@ -78,26 +124,43 @@ class ListVendors extends Component {
             this.props.navigation.navigate('vendorProfile');
           }}
           onPressMore={d => this.resolveActionSheet(d)}
+          delay={500 + index * 100}
         />
       ));
     }
   }
   render() {
-    return (
+    const { error, loading } = this.state;
+    return loading ? (
+      <LoadingIndicator />
+    ) : (
       <ScrollView>
+        <SearchBar
+          lightTheme
+          icon={{ type: 'font-awesome', name: 'search' }}
+          onChangeText={value => this.props.searchVendor(this.props.data, value)}
+          placeholder="Type Here..."
+          style={{ borderTopWidth: 0 }}
+          containerStyle={{ backgroundColor: ACCENT_COLOR, borderTopWidth: 0 }}
+        />
         <View style={{ marginBottom: 20 }}>{this.resolveList()}</View>
         {this.actionSheet()}
+        <ErrorModal
+          visible={error !== ''}
+          text={error}
+          onPress={() => this.setState({ error: '' })}
+        />
       </ScrollView>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { data } = state.listVendor;
-  return { data };
+  const { data, searchVendors } = state.listVendor;
+  return { data, searchVendors };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchvendorsList, selectedVendor, initializeEditVendor }
+  { fetchvendorsList, selectedVendor, initializeEditVendor, generatePdf, searchVendor }
 )(ListVendors);

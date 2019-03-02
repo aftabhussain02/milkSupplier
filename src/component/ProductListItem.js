@@ -1,19 +1,19 @@
 import React from 'react';
 import { TouchableNativeFeedback, View, Text } from 'react-native';
-import { Icon } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 import { ACCENT_COLOR } from '../constant';
 
-export const ProductListItem = ({ title, onPress, amount, product }) => {
+export const ProductListItem = ({ title, onPress, amount, product, delay }) => {
   const { container, iconContainer, textContainer, titleStyle, amountStyle, productStyle } = styles;
   return (
     <TouchableNativeFeedback onPress={onPress} style={{ width: '100%' }}>
-      <View style={container}>
+      <Animatable.View delay={delay} animation="lightSpeedIn" style={container}>
         <View style={textContainer}>
           <Text style={titleStyle}>{title}</Text>
           <Text style={productStyle}>{product}</Text>
           <Text style={amountStyle}>${amount}</Text>
         </View>
-      </View>
+      </Animatable.View>
     </TouchableNativeFeedback>
   );
 };
@@ -23,14 +23,16 @@ const styles = {
     flexDirection: 'row',
     width: '90%',
     padding: 10,
-    marginTop: 20,
+    marginTop: 10,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: ACCENT_COLOR,
     // borderWidth: 1,
+    elevation: 1,
+    borderLeftWidth: 2,
+    borderColor: ACCENT_COLOR,
     borderRadius: 10,
-    elevation: 2,
+    backgroundColor: '#fff',
   },
   iconContainer: {
     alignSelf: 'flex-end',
@@ -39,7 +41,6 @@ const styles = {
     borderRadius: 4,
   },
   textContainer: {
-    flex: 1,
     flexDirection: 'row',
   },
   titleStyle: {

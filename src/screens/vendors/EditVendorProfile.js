@@ -134,7 +134,6 @@ const mapStateToProps = state => {
     id,
     alter_phone,
   } = state.editVendor;
-  console.log(state.editVendor);
   const { data: products } = state.fetchProduct;
   return {
     success,

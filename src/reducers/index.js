@@ -19,6 +19,12 @@ import editProductEntry from './editProductEntryReducer';
 import listVendorProductEntry from './listVendorProductEntryReducer';
 import editVendorProductEntry from './editVendorProductEntry';
 import changePassword from './changePasswordReducer';
+import dashboard from './dashboardReducer';
+import listCredit from './listCreditReducer';
+import listDebit from './listDebitReducer';
+import editCredit from './editCreditReducer';
+import editDebit from './editDebitReducer';
+import notes from './notesReducer';
 
 export default combineReducers({
   nav: navReducer,
@@ -41,4 +47,10 @@ export default combineReducers({
   listVendorProductEntry,
   editVendorProductEntry,
   changePassword,
+  dashboard,
+  listCredit,
+  listDebit,
+  editCredit,
+  editDebit,
+  notes,
 });

@@ -5,6 +5,7 @@ import {
   ADD_CREDIT_SUCCESS,
   ADD_CREDIT_ERROR,
   ADD_CREDIT_ATTEMPT,
+  CREDIT_LIST,
 } from './type';
 
 export const updateAddCreditProps = (prop, value) => ({
@@ -27,7 +28,6 @@ export const addCredit = ({ id: credit_user_id, amount }) => dispatch =>
       { headers }
     )
       .then(({ data }) => {
-        console.log(data);
         dispatch({
           type: ADD_CREDIT_SUCCESS,
           payload: data,
@@ -47,3 +47,15 @@ export const addCredit = ({ id: credit_user_id, amount }) => dispatch =>
         });
       });
   });
+
+export const fetchCredit = () => dispatch =>
+  getStorageParams().then(({ headers }) =>
+    Axios.get(`${creditApi}`, { headers })
+      .then(({ data }) => {
+        dispatch({
+          type: CREDIT_LIST,
+          payload: data.data,
+        });
+      })
+      .catch(e => console.log(e))
+  );

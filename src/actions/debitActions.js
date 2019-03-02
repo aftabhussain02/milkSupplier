@@ -5,6 +5,7 @@ import {
   ADD_DEBIT_SUCCESS,
   ADD_DEBIT_ERROR,
   ADD_DEBIT_ATTEMPT,
+  DEBIT_LIST,
 } from './type';
 
 export const updateAddDebitProps = (prop, value) => ({
@@ -46,3 +47,15 @@ export const addDebit = ({ id: debit_user_id, amount }) => dispatch =>
         });
       });
   });
+
+export const fetchDebit = () => dispatch =>
+  getStorageParams().then(({ headers }) =>
+    Axios.get(`${debitApi}`, { headers })
+      .then(({ data }) => {
+        dispatch({
+          type: DEBIT_LIST,
+          payload: data.data,
+        });
+      })
+      .catch(e => console.log(e))
+  );

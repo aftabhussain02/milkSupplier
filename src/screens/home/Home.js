@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, BackHandler, Text } from 'react-native';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryTheme } from 'victory-native';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
-import { ACCENT_COLOR } from '../../constant';
+import { connect } from 'react-redux';
+import { ACCENT_COLOR, SUCCESS_COLOR, FAILURE_COLOR } from '../../constant';
 
 class HomeScreen extends Component {
   _didFocusSubscription;
@@ -27,6 +28,7 @@ class HomeScreen extends Component {
   };
 
   resolveChart() {
+    const { totalSales, totalPurchases } = this.props.totals;
     return (
       <View style={styles.chartContainer}>
         <Text style={styles.headingStyle}>Totals</Text>
@@ -43,6 +45,7 @@ class HomeScreen extends Component {
           }}
           padding={{ left: 60, top: 40, bottom: 130 }}
           domainPadding={{ x: [100, 100], y: 5 }}
+          animate={{ duration: 1000 }}
         >
           <VictoryAxis
             style={{
@@ -74,34 +77,42 @@ class HomeScreen extends Component {
 
           <VictoryBar
             style={{
-              data: { fill: ACCENT_COLOR, width: 80 },
+              data: { fill: SUCCESS_COLOR, width: 80 },
               labels: {
                 fontSize: 9,
               },
             }}
-            data={[
-              {
-                x: 'Total Sales',
-                y: 1000,
-                label: '₹1000',
-              },
-            ]}
+            data={
+              totalSales
+                ? [
+                    {
+                      x: 'Total Sales',
+                      y: parseInt(totalSales),
+                      label: `₹${totalSales}`,
+                    },
+                  ]
+                : []
+            }
             alignment="middle"
           />
           <VictoryBar
             style={{
-              data: { fill: '#CB0202', width: 80 },
+              data: { fill: FAILURE_COLOR, width: 80 },
               labels: {
                 fontSize: 9,
               },
             }}
-            data={[
-              {
-                x: 'Total purchases',
-                y: 2000,
-                label: '₹2000',
-              },
-            ]}
+            data={
+              totalPurchases
+                ? [
+                    {
+                      x: 'Total purchases',
+                      y: parseInt(totalPurchases),
+                      label: `₹${totalPurchases}`,
+                    },
+                  ]
+                : []
+            }
             alignment="middle"
           />
         </VictoryChart>
@@ -150,4 +161,9 @@ const styles = {
     backgroundColor: '#ededed',
   },
 };
-export default HomeScreen;
+const mapStateToProps = state => {
+  const { totals } = state.dashboard.data;
+
+  return { totals };
+};
+export default connect(mapStateToProps)(HomeScreen);

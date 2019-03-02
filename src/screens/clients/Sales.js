@@ -17,19 +17,22 @@ class Sales extends Component {
 
   resolveList() {
     if (this.props.data && this.props.data.length > 0) {
-      return _.map(this.props.data, v => {
-        const { user, product, amount } = v;
-        return (
-          <ProductList>
-            <ProductListItem
-              title={user.name}
-              product={product.full_name}
-              amount={amount}
-              onPress={() => this.onPress(v)}
-            />
-          </ProductList>
-        );
-      });
+      return (
+        <ProductList>
+          {_.map(this.props.data, (v, index) => {
+            const { user, product, amount } = v;
+            return (
+              <ProductListItem
+                title={user.name}
+                product={product.full_name}
+                amount={amount}
+                onPress={() => this.onPress(v)}
+                delay={500 + index * 100}
+              />
+            );
+          })}
+        </ProductList>
+      );
     }
     return <Text style={{ textAlign: 'center', marginTop: 20 }}>Empty Sales.</Text>;
   }
@@ -57,7 +60,6 @@ const styles = {
     paddingLeft: 10,
     paddingRight: 10,
     marginTop: 10,
-    marginBottom: -10,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -81,13 +83,13 @@ const styles = {
     width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   productStyle: {
     width: '30%',
     fontWeight: 'bold',
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 };
 

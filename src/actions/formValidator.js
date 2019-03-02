@@ -24,25 +24,29 @@ export const validate = (values, rules, type) => dispatch => {
         return;
       }
       if (values[key] && values[key].toString().length !== 10) {
-        data = Object.assign(data, { [key]: [`${attribute(key)} is invalid.`] });
+        data = Object.assign(data, {
+          [key]: [`${attribute(key)} should not be more than 10 numbers.`],
+        });
       }
     }
     if (rule.includes('letters')) {
       if (rule.includes('nullable') && !values[key]) {
         return;
       }
-      if (/[^a-zA-Z]/.test(values[key])) {
+      if (/^[a-zA-Z\s]*$/.test(values[key])) {
         data = Object.assign(data, { [key]: [`${attribute(key)} should be letters only.`] });
       }
     }
     if (rule.includes('qty')) {
       if (parseInt(values[key]) > 1000) {
-        data = Object.assign(data, { [key]: [`${attribute(key)} cant be more than 1000.`] });
+        data = Object.assign(data, { [key]: [`${attribute(key)} should not be more than 1000.`] });
       }
     }
     if (rule.includes('amount')) {
       if (parseInt(values[key]) > 1000000) {
-        data = Object.assign(data, { [key]: [`${attribute(key)} cant be more than 1000000.`] });
+        data = Object.assign(data, {
+          [key]: [`${attribute(key)} should not be more than 1000000.`],
+        });
       }
     }
   });

@@ -12,6 +12,18 @@ class Setting extends Component {
             onPress={() => this.props.navigation.navigate('changePassword')}
             iconName="security"
           />
+          <MenuButton
+            title="All Transactions"
+            onPress={() => this.props.navigation.navigate('transaction')}
+            iconName="rupee"
+            iconType="font-awesome"
+          />
+          <MenuButton
+            title="All Notes"
+            onPress={() => this.props.navigation.navigate('notes')}
+            iconName="book"
+            iconType="font-awesome"
+          />
         </MenuList>
       </View>
     );

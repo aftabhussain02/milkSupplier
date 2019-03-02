@@ -75,13 +75,37 @@ export const UPDATE_ADD_DEBIT_PROPS = 'update_ADD_DEBIT_props';
 export const ADD_DEBIT_ATTEMPT = 'ADD_DEBIT_attempt';
 export const ADD_DEBIT_SUCCESS = 'ADD_DEBIT_success';
 export const ADD_DEBIT_ERROR = 'ADD_DEBIT_error';
+export const DEBIT_LIST = 'debit_list';
+
+export const UPDATE_EDIT_DEBIT_PROPS = 'update_EDIT_DEBIT_props';
+export const EDIT_DEBIT_ATTEMPT = 'EDIT_DEBIT_attempt';
+export const EDIT_DEBIT_SUCCESS = 'EDIT_DEBIT_success';
+export const EDIT_DEBIT_ERROR = 'EDIT_DEBIT_error';
+export const INITIALIZE_EDIT_DEBIT = 'initialize_edit_DEBIT';
 
 export const UPDATE_ADD_CREDIT_PROPS = 'update_ADD_CREDIT_props';
 export const ADD_CREDIT_ATTEMPT = 'ADD_CREDIT_attempt';
 export const ADD_CREDIT_SUCCESS = 'ADD_CREDIT_success';
 export const ADD_CREDIT_ERROR = 'ADD_CREDIT_error';
+export const CREDIT_LIST = 'credit_list';
+
+export const UPDATE_EDIT_CREDIT_PROPS = 'update_EDIT_CREDIT_props';
+export const EDIT_CREDIT_ATTEMPT = 'EDIT_CREDIT_attempt';
+export const EDIT_CREDIT_SUCCESS = 'EDIT_CREDIT_success';
+export const EDIT_CREDIT_ERROR = 'EDIT_CREDIT_error';
+export const INITIALIZE_EDIT_CREDIT = 'initialize_edit_CREDIT';
 
 export const UPDATE_CHANGE_PASSWORD_PROPS = 'update_CHANGE_PASSWORD_props';
 export const CHANGE_PASSWORD_ATTEMPT = 'CHANGE_PASSWORD_attempt';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_success';
 export const CHANGE_PASSWORD_ERROR = 'CHANGE_PASSWORD_error';
+
+export const UPDATE_DASHBOARD_PROPS = 'update_DASHBOARD_props';
+export const DASHBOARD_ATTEMPT = 'DASHBOARD_attempt';
+export const FETCH_DASHBOARD = 'DASHBOARD_FETCH';
+export const DASHBOARD_ERROR = 'DASHBOARD_error';
+
+export const SEARCH_CUSTOMERS = 'search_customer';
+export const SEARCH_VENDORS = 'search_vendors';
+
+export const LIST_NOTES = 'list_notes';

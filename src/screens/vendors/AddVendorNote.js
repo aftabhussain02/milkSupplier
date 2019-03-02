@@ -18,7 +18,7 @@ class AddVendorNote extends Component {
 
   onSuccessPress() {
     this.props.fetchvendorsList();
-    this.props.navigation.goBack();
+    this.props.navigation.navigate('listVendor');
     this.updateProductProps('success', false);
   }
 
@@ -68,6 +68,7 @@ class AddVendorNote extends Component {
             error={'note' in error}
             errorText={'note' in error && error.note[0]}
             onChangeText={value => this.updateProductProps('note', value)}
+            multiline
           />
           <InputError
             visible={Object.keys(error) < 1 && errorMessage}

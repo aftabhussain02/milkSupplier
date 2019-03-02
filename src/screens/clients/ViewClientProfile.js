@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, TouchableNativeFeedback, Text, Linking } from 'react-native';
+import { View, TouchableNativeFeedback, Text, Linking, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 import { ProfileView, ProfileViewItem } from '../../component';
-import { ACCENT_COLOR } from '../../constant';
+import { SUCCESS_COLOR, FAILURE_COLOR } from '../../constant';
 
 class ViewClientProfile extends Component {
   numberComponent(phone) {
@@ -22,38 +22,47 @@ class ViewClientProfile extends Component {
     const { last } = this.props.selectedClient;
     if (last && Object.keys(last).length > 0) {
       return (
-        <View>
+        <ProfileView style={{ paddingBottom: 20 }}>
           <ProfileViewItem
             heading={`Last Entry (${moment(last.entry_date).format('DD-MM-YYYY')})`}
           />
-          <ProfileViewItem title={_.upperFirst(last.product.name)} value={`₹${last.amount}`} />
-        </View>
+          <ProfileViewItem title="Product" value={_.upperFirst(last.product.name)} />
+          <ProfileViewItem title="Amount" value={last.amount} />
+          <ProfileViewItem title="Qty" value={last.qty} />
+          <ProfileViewItem title="Unit" value={last.unit_type} />
+        </ProfileView>
       );
     }
   }
   render() {
-    const { name, area, phone, email, alter_phone, last } = this.props.selectedClient;
+    const { name, area, phone, email, alter_phone, last, payment } = this.props.selectedClient;
     const { footerContainer, footerTextStyle, containerStyle } = styles;
     return (
       <View style={containerStyle}>
-        <ProfileView>
-          <ProfileViewItem
-            heading="Personal Detail"
-            columnContainer={{ borderTopWidth: 1, borderBottomWidth: 1 }}
-          />
-          <ProfileViewItem title="Name" value={name} columnContainer={{ borderTopWidth: 1 }} />
-          <ProfileViewItem title="Area" value={area} />
-          <ProfileViewItem title="Phone" valueComponent={this.numberComponent(phone)} />
-          <ProfileViewItem
-            title="Alternate Number"
-            valueComponent={this.numberComponent(alter_phone)}
-          />
-          <ProfileViewItem title="Email" value={email || '-'} />
+        <ScrollView>
+          <ProfileView>
+            <ProfileViewItem heading="Personal Detail" />
+            <ProfileViewItem title="Name" value={name} />
+            <ProfileViewItem title="Area" value={area} />
+            <ProfileViewItem title="Phone" valueComponent={this.numberComponent(phone)} />
+            <ProfileViewItem
+              title="Alternate Number"
+              valueComponent={this.numberComponent(alter_phone)}
+            />
+            <ProfileViewItem title="Email" value={email || '-'} />
+          </ProfileView>
           {this.resolveLastEntry()}
-        </ProfileView>
-        <View style={footerContainer}>
+        </ScrollView>
+        <View
+          style={[
+            footerContainer,
+            payment.toString().includes('-') && {
+              backgroundColor: FAILURE_COLOR,
+            },
+          ]}
+        >
           <Text style={[footerTextStyle, { fontWeight: 'bold' }]}>Amount</Text>
-          <Text style={footerTextStyle}>₹2000</Text>
+          <Text style={footerTextStyle}>₹{payment}</Text>
         </View>
       </View>
     );
@@ -68,7 +77,7 @@ const styles = {
   footerContainer: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: ACCENT_COLOR,
+    backgroundColor: SUCCESS_COLOR,
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',

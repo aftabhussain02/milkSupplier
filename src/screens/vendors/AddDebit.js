@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { InputText, InputButton, SuccessModal, InputError } from '../../component';
-import { updateAddDebitProps, addDebit, validate, ADD_DEBIT_ERROR } from '../../actions';
+import {
+  updateAddDebitProps,
+  addDebit,
+  validate,
+  ADD_DEBIT_ERROR,
+  fetchvendorsList,
+  fetchDebit,
+} from '../../actions';
 
 class AddDebit extends Component {
   onSubmit() {
@@ -36,6 +43,9 @@ class AddDebit extends Component {
           visible={success}
           onPress={() => {
             this.props.updateAddDebitProps('success', false);
+            this.props.fetchvendorsList();
+            this.props.fetchDebit();
+            this.props.navigation.goBack();
           }}
           text={message}
         />
@@ -72,5 +82,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addDebit, updateAddDebitProps, validate }
+  { addDebit, updateAddDebitProps, validate, fetchvendorsList, fetchDebit }
 )(AddDebit);

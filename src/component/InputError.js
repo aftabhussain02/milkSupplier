@@ -1,14 +1,30 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react';
+import { Text } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { FAILURE_COLOR } from '../constant';
 
-export const InputError = ({ errorText, visible, containerStyle }) =>
-  visible ? (
-    <View style={[styles.containerStyle, containerStyle]}>
-      <Text style={styles.textStyle}>{errorText}</Text>
-    </View>
-  ) : (
-    <View />
-  );
+export class InputError extends Component {
+  componentWillReceiveProps(nextProps) {
+    const { visible } = nextProps;
+    if (visible !== this.props.visible && visible === true) {
+      this.animate.fadeIn();
+    } else if (visible !== this.props.visible && visible === false) {
+      this.animate.fadeOut();
+    }
+  }
+  render() {
+    const { errorText, containerStyle } = this.props;
+
+    return (
+      <Animatable.View
+        ref={ref => (this.animate = ref)}
+        style={[styles.containerStyle, containerStyle]}
+      >
+        <Text style={styles.textStyle}>{errorText}</Text>
+      </Animatable.View>
+    );
+  }
+}
 
 const styles = {
   containerStyle: {
@@ -17,7 +33,7 @@ const styles = {
     width: '90%',
   },
   textStyle: {
-    color: 'red',
+    color: FAILURE_COLOR,
     textAlign: 'center',
   },
 };

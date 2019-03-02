@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { InputText, InputButton, SuccessModal, InputError } from '../../component';
-import { updateAddCreditProps, addCredit, validate, ADD_CREDIT_ERROR } from '../../actions';
+import {
+  updateAddCreditProps,
+  addCredit,
+  validate,
+  ADD_CREDIT_ERROR,
+  fetchCustomersList,
+  fetchCredit,
+} from '../../actions';
 
 class AddCredit extends Component {
   onSubmit() {
@@ -39,6 +46,8 @@ class AddCredit extends Component {
           visible={success}
           onPress={() => {
             this.props.updateAddCreditProps('success', false);
+            this.props.fetchCustomersList();
+            this.props.fetchCredit();
             this.props.navigation.goBack();
           }}
           text={message}
@@ -76,5 +85,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addCredit, updateAddCreditProps, validate }
+  { addCredit, updateAddCreditProps, validate, fetchCustomersList, fetchCredit }
 )(AddCredit);
